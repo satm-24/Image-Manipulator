@@ -1,0 +1,52 @@
+Java Image Processing Designed by: Satwik Misra and Steven Ngo
+
+This project is an image processing program for different types of image formats. Currently, the
+first version only supports PPM images in a P3 format, with the only modification being filtering
+and color transformation. This project also supports programmatically creating images, though the
+only implementation thus far is to create a PPM image in a checkerboard pattern. We utilized
+IntelliJ IDEA to develop the code. In the future, we hope to implement support for other file types
+such as JPG and PNG, as well as other transformation types such as adjusting saturation and
+brightness. The current filter only supports sharpening and blurring, and the color transformation
+supports sepia and greyscale, as well as any custom matrix.
+
+Model Overview:
+
+Interfaces:
+
+- ICreator: encompasses different function objects for programmatically creating images;
+  additionally, decouples the model from the need for modification when implementing new methods of
+  creation
+- IOperation: encompasses different function objects for editing images; additionally, decouples the
+  model from the need for modification when implementing new editing functionality
+- IColor: represents the different types of implementations of colors, such as in a base 10 rgb
+  format, as well as functionality necessary to edit colors
+- IGrid: represents the different types of image representations through a grid (2d array)
+- IPixel: represents different types of pixels, which are single instances of color of an image and
+  holds functionality for support in editing pixels
+- IProcessingImageModel: represents models for the image processing program, dependent on which file
+  type is to be supported Classes:
+- CreateCheckerboard: represents a function object that programmatically creates a checkerboard
+  pattern
+- ColorTransformation: represents a function object that transforms an image based on a
+  predetermined filter type
+- Filter: represents a function object that filters an image using a predetermined kernel
+- Color: a representation of color through decimal RGB values
+- ImageProcessingUtils: holds functionality for methods that can be called globally; i.e. utility
+  methods for images processing
+- ImageUtil: handles the importing and exporting of images
+- Pixel: a pixel representation with a color represented by rgb values
+- PPMImageGrid: an image grid for PPM files; handles all operations on the pixels of an image during
+  transformations
+- PPMImageModel: a model for the image processing program, designed specifically for PPM file types:
+  handles operations on the images held by the model and enforces constraints for the client Enums:
+- FilterType: represents the different predefined filter types, such as sharpening and blurring;
+  holds methods that returns the kernel for a given type
+- TransformationType: represents the different predefined transformation types, such as sepia and
+  greyscale, as well as any future ones to be added
+
+Citations:
+Both blackbuck.ascii.ppm and snail.ascii.ppm were PPM images found at
+https://people.sc.fsu.edu/~jburkardt/data/ppma/ppma.html. Though no photographer could be named,
+they both were displayed as sample images on a site by the Department of Scientific Computer at
+Florida State University. Doing more research into the origin of these images, they were .png files
+that were then converted to .ppm (https://people.sc.fsu.edu/~jburkardt/data/png/png.html).
