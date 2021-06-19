@@ -8,7 +8,7 @@ import model.FilterType;
 import model.IGrid;
 import model.ImageUtil;
 import model.ImageGrid;
-import model.PPMImageModel;
+import model.SimpleImageModel;
 import model.Pixel;
 import model.TransformationType;
 import model.operations.ColorTransformation;
@@ -21,9 +21,9 @@ import org.junit.Test;
  */
 public class ImageGridTest {
 
-  PPMImageModel p;
+  SimpleImageModel p;
   ImageGrid ig;
-  PPMImageModel testModel;
+  SimpleImageModel testModel;
 
   List<IGrid> imageList;
 
@@ -66,7 +66,7 @@ public class ImageGridTest {
 
     threeXthreeGrid = new ImageGrid(pixels3X3, 3, 3);
 
-    p = new PPMImageModel();
+    p = new SimpleImageModel();
 
     white = new Color(255, 255, 255);
     black = new Color(0, 0, 0);
@@ -78,7 +78,7 @@ public class ImageGridTest {
     purplePixel = new Pixel(purple);
     lightRedPixel = new Pixel(lightRed);
 
-    testModel = new PPMImageModel();
+    testModel = new SimpleImageModel();
     purpleAndLightRedPixels = new Pixel[][]{{purplePixel, purplePixel, purplePixel},
         {lightRedPixel, lightRedPixel, lightRedPixel}, {purplePixel, purplePixel, purplePixel}};
     purpleAndLightRedGrid = new ImageGrid(purpleAndLightRedPixels, 3, 3);
@@ -96,7 +96,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(100, 230, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -132,7 +132,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(100, 230, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -169,7 +169,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -201,7 +201,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -229,7 +229,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -257,7 +257,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -284,7 +284,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -314,7 +314,7 @@ public class ImageGridTest {
 
     ImageGrid oneByOnegrid = new ImageGrid(pixels1x1, 1, 1);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(oneByOnegrid);
 
@@ -339,7 +339,7 @@ public class ImageGridTest {
 
     ImageGrid oneByOnegrid = new ImageGrid(pixels1x1, 1, 1);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(oneByOnegrid);
 
@@ -362,7 +362,7 @@ public class ImageGridTest {
 
     ImageGrid zeroByzeroGrid = new ImageGrid(pixels0x0, 0, 0);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(zeroByzeroGrid);
 
@@ -381,7 +381,7 @@ public class ImageGridTest {
 
     ImageGrid zeroByzeroGrid = new ImageGrid(pixels0x0, 0, 0);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(zeroByzeroGrid);
 
@@ -407,7 +407,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -515,7 +515,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -622,7 +622,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -697,7 +697,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -773,7 +773,7 @@ public class ImageGridTest {
     pixels2x2[1][1] = new Pixel(new Color(1, 23, 105));
     pixels2x2[0][0] = new Pixel(new Color(100, 230, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     ImageGrid twoBytwoGrid = new ImageGrid(pixels2x2, 2, 2);
 
@@ -807,7 +807,7 @@ public class ImageGridTest {
     pixels2x3[1][1] = new Pixel(new Color(1, 23, 105));
     pixels2x3[0][0] = new Pixel(new Color(100, 230, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     ImageGrid twoBy3Grid = new ImageGrid(pixels2x3, 3, 2);
 
@@ -847,7 +847,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(100, 230, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -881,7 +881,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(100, 230, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -915,7 +915,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -943,7 +943,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -971,7 +971,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -998,7 +998,7 @@ public class ImageGridTest {
       }
     }
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -1034,7 +1034,7 @@ public class ImageGridTest {
 
     ImageGrid oneByOnegrid = new ImageGrid(pixels1x1, 1, 1);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(oneByOnegrid);
 
@@ -1057,7 +1057,7 @@ public class ImageGridTest {
 
     ImageGrid zeroByzeroGrid = new ImageGrid(pixels0x0, 0, 0);
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(zeroByzeroGrid);
 
@@ -1085,7 +1085,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -1193,7 +1193,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -1300,7 +1300,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -1375,7 +1375,7 @@ public class ImageGridTest {
     pixels3X3[0][2] = new Pixel(new Color(10, 23, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     m.add(threeXthreeGrid);
 
@@ -1451,7 +1451,7 @@ public class ImageGridTest {
     pixels2x2[1][1] = new Pixel(new Color(1, 23, 105));
     pixels2x2[0][0] = new Pixel(new Color(100, 230, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     ImageGrid twoBytwoGrid = new ImageGrid(pixels2x2, 2, 2);
 
@@ -1484,7 +1484,7 @@ public class ImageGridTest {
     pixels2x3[1][1] = new Pixel(new Color(1, 23, 105));
     pixels2x3[0][0] = new Pixel(new Color(100, 230, 105));
 
-    PPMImageModel m = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
 
     ImageGrid twoBy3Grid = new ImageGrid(pixels2x3, 3, 2);
 

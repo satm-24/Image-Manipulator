@@ -1,3 +1,5 @@
+package model;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -7,8 +9,8 @@ import model.Color;
 import model.FilterType;
 import model.IGrid;
 import model.ImageUtil;
-import model.PPMImageGrid;
-import model.PPMImageModel;
+import model.ImageGrid;
+import model.SimpleImageModel;
 import model.Pixel;
 import model.TransformationType;
 import model.creators.CreateCheckerboard;
@@ -19,13 +21,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for the PPMImageModel class.
+ * Tests for the SimpleImageModel class.
  */
-public class PPMImageModelTest {
+public class ImageModelTest {
 
-  PPMImageModel p;
-  PPMImageGrid ig;
-  PPMImageModel testModel;
+  SimpleImageModel p;
+  ImageGrid ig;
+  SimpleImageModel testModel;
 
   List<IGrid> imageList;
 
@@ -68,7 +70,7 @@ public class PPMImageModelTest {
 
     imageList = new ArrayList<>();
 
-    p = new PPMImageModel();
+    p = new SimpleImageModel();
 
     white = new Color(255, 255, 255);
     black = new Color(0, 0, 0);
@@ -80,7 +82,7 @@ public class PPMImageModelTest {
     purplePixel = new Pixel(purple);
     lightRedPixel = new Pixel(lightRed);
 
-    empty4x4 = new PPMImageGrid(new Pixel[4][4], 4, 4);
+    empty4x4 = new ImageGrid(new Pixel[4][4], 4, 4);
     pixelGrid1x1 = new Pixel[][]{{whitePixel}};
     pixelGrid1x3 = new Pixel[][]{{whitePixel, blackPixel, whitePixel}};
     pixelGrid4x4 = new Pixel[][]{{whitePixel, whitePixel, blackPixel, blackPixel},
@@ -90,14 +92,14 @@ public class PPMImageModelTest {
     pixelGrid3x3 = new Pixel[][]{{whitePixel, blackPixel, whitePixel}, {blackPixel, whitePixel,
         blackPixel}, {whitePixel, blackPixel, whitePixel}};
 
-    checkerBoard1x1 = new PPMImageGrid(pixelGrid1x1, 1, 1);
-    checkerBoard4x4 = new PPMImageGrid(pixelGrid4x4, 4, 4);
-    checkerBoard3x3 = new PPMImageGrid(pixelGrid3x3, 3, 3);
+    checkerBoard1x1 = new ImageGrid(pixelGrid1x1, 1, 1);
+    checkerBoard4x4 = new ImageGrid(pixelGrid4x4, 4, 4);
+    checkerBoard3x3 = new ImageGrid(pixelGrid3x3, 3, 3);
 
-    testModel = new PPMImageModel();
+    testModel = new SimpleImageModel();
     purpleAndLightRedPixels = new Pixel[][]{{purplePixel, purplePixel, purplePixel},
         {lightRedPixel, lightRedPixel, lightRedPixel}, {purplePixel, purplePixel, purplePixel}};
-    purpleAndLightRedGrid = new PPMImageGrid(purpleAndLightRedPixels, 3, 3);
+    purpleAndLightRedGrid = new ImageGrid(purpleAndLightRedPixels, 3, 3);
     testModel.add(purpleAndLightRedGrid);
 
     createBoard1x1 = new CreateCheckerboard(1, 1, new ArrayList<>(Arrays.asList(
@@ -145,7 +147,7 @@ public class PPMImageModelTest {
     pixelsNew[2][1] = new Pixel(new Color(24, 24, 24));
     pixelsNew[2][2] = new Pixel(new Color(0, 0, 0));
 
-    p.add(new PPMImageGrid(pixelsNew, 3, 3));
+    p.add(new ImageGrid(pixelsNew, 3, 3));
 
     p.operate(new Filter(FilterType.BLUR));
 
@@ -173,7 +175,7 @@ public class PPMImageModelTest {
     pixelsNew[2][1] = new Pixel(new Color(24, 24, 24));
     pixelsNew[2][2] = new Pixel(new Color(0, 0, 0));
 
-    p.add(new PPMImageGrid(pixelsNew, 3, 3));
+    p.add(new ImageGrid(pixelsNew, 3, 3));
 
     p.operate(new Filter(FilterType.BLUR));
 
