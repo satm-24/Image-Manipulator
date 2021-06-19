@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -15,7 +16,7 @@ import view.ILayer;
 /**
  * Represents a controller that takes in commands for our image processing software.
  */
-public class ImageProcessingController implements IProcessingController {
+public class SimpleImageProcessingController implements IProcessingController {
 
   private final Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;
   private final IProcessingImageModel model;
@@ -35,7 +36,7 @@ public class ImageProcessingController implements IProcessingController {
    * @param ap the appendable object used to transmit the output, connected to view
    * @throws IllegalArgumentException if either argument is null
    */
-  public ImageProcessingController(IProcessingImageModel model, List<ILayer> layers,
+  public SimpleImageProcessingController(IProcessingImageModel model, List<ILayer> layers,
       Readable rd, Appendable ap) {
 
     ImageProcessingUtils.checkNotNull(layers, "The list of layers cannot be null.");
@@ -53,7 +54,8 @@ public class ImageProcessingController implements IProcessingController {
 
     this.layers = layers;
 
-    knownCommands.put("save", s -> new SaveImage(new File(s.next()), this.layers));
+    knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next()),
+        this.layers));
     knownCommands.put("load", s -> new LoadImage(new File(s.next()), this.layers));
     knownCommands.put("blur", s -> new BlurImage());
     knownCommands.put("sharpen", s -> new SharpenImage());
@@ -74,6 +76,29 @@ public class ImageProcessingController implements IProcessingController {
   }
 
   /**
+   * Converts a string to a file type enum.
+   *
+   * @param next the String we are converting
+   * @return the Enum<FileType> representing what file type the string is.
+   * @throw IllegalArgumentException if the string is not a valid file type
+   */
+  private Enum<FileType> convertToFileType(String next) {
+
+    switch (next.toUpperCase()) {
+      case "JPEG":
+        return FileType.JPEG;
+      case "PNG":
+        return FileType.PNG;
+      case "PPM":
+        return FileType.PPM;
+
+      default:
+        throw new IllegalArgumentException("String is not a valid file type");
+    }
+
+  }
+
+  /**
    * Checks if the given string is a valid name of a layer in our list of layers, and sets the
    * current layer to that layer if it is.
    *
@@ -91,7 +116,7 @@ public class ImageProcessingController implements IProcessingController {
    */
   @Override
   public void parseInput() {
-    Scanner scan = new Scanner(System.in);
+    Scanner scan = new Scanner(this.rd);
     IProcessingImageModel m = new SimpleImageModel();
 
     while (scan.hasNext()) {

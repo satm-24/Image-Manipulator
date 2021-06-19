@@ -3,7 +3,7 @@ package model.creators;
 import java.util.List;
 import model.Color;
 import model.IGrid;
-import model.PPMImageGrid;
+import model.ImageGrid;
 import model.Pixel;
 
 /**
@@ -61,6 +61,6 @@ public class CreateCheckerboard implements ICreator {
         }
       }
     }
-    return new PPMImageGrid(pixelGrid, dimension, dimension);
+    return new ImageGrid(pixelGrid, dimension, dimension);
   }
 }

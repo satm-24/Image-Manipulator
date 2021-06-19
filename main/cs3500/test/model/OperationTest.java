@@ -1,9 +1,11 @@
+package model;
+
 import static org.junit.Assert.assertArrayEquals;
 
 import model.Color;
 import model.FilterType;
 import model.IGrid;
-import model.PPMImageGrid;
+import model.ImageGrid;
 import model.Pixel;
 import model.TransformationType;
 import model.operations.ColorTransformation;
@@ -43,7 +45,7 @@ public class OperationTest {
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
     IGrid p = new ColorTransformation(TransformationType.GREYSCALE)
-        .apply(new PPMImageGrid(pixels3X3, 3, 3));
+        .apply(new ImageGrid(pixels3X3, 3, 3));
 
     Pixel[][] pixelsNew = new Pixel[3][3];
 
@@ -79,7 +81,7 @@ public class OperationTest {
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
     IGrid p = new Filter(FilterType.BLUR)
-        .apply(new PPMImageGrid(pixels3X3, 3, 3));
+        .apply(new ImageGrid(pixels3X3, 3, 3));
 
     Pixel[][] pixelsNew = new Pixel[3][3];
 

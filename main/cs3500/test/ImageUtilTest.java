@@ -1,8 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
 import model.Color;
+import model.ImageGrid;
 import model.ImageUtil;
-import model.PPMImageGrid;
 import model.Pixel;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class ImageUtilTest {
 
     String file = new String("koalaTest.ppm");
 
-    PPMImageGrid g = ImageUtil.readPPM(file);
+    ImageGrid g = ImageUtil.readPPM(file);
 
     assertEquals(768, g.getPixels().length);
 
@@ -37,13 +37,13 @@ public class ImageUtilTest {
       }
     }
 
-    PPMImageGrid g = new PPMImageGrid(p, 2, 2);
+    ImageGrid g = new ImageGrid(p, 2, 2);
 
     ImageUtil.writeToPPM(g, "Koala.ppm");
 
     String file = new String("Koala.ppm");
 
-    PPMImageGrid g2 = ImageUtil.readPPM(file);
+    ImageGrid g2 = ImageUtil.readPPM(file);
 
     assertEquals(2, g2.getPixels().length);
 

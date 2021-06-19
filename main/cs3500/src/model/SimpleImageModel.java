@@ -9,14 +9,14 @@ import model.operations.IOperation;
  * Represents image processing functionality for PPM files. Contains methods that filter, transform
  * and create images in a PPM format.
  */
-public class PPMImageModel implements IProcessingImageModel {
+public class SimpleImageModel implements IProcessingImageModel {
 
   private final List<IGrid> images;
 
   /**
    * Constructs an instance of a PPMImage class, initializing the list of images to an empty list.
    */
-  public PPMImageModel() {
+  public SimpleImageModel() {
     this.images = new ArrayList<IGrid>();
   }
 

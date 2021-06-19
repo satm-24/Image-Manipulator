@@ -194,6 +194,8 @@ public class ImageUtil extends java.awt.Color {
       filename = "Koala.ppm";
     }
 
+    System.out.println(new File("/Users/satwikmisra/Desktop/koalaTest.ppm"));
+
    // ImageUtil.writeToPPM(readPPM(filename), "/Users/satwikmisra/Desktop/koalaTest.ppm");
 
 
@@ -203,15 +205,15 @@ public class ImageUtil extends java.awt.Color {
      */
 
     /*
-    PPMImageModel m = new PPMImageModel();
-    PPMImageModel m2 = new PPMImageModel();
-    PPMImageModel m3 = new PPMImageModel();
-    PPMImageModel m4 = new PPMImageModel();
+    SimpleImageModel m = new SimpleImageModel();
+    SimpleImageModel m2 = new SimpleImageModel();
+    SimpleImageModel m3 = new SimpleImageModel();
+    SimpleImageModel m4 = new SimpleImageModel();
 
-    PPMImageModel m5 = new PPMImageModel();
-    PPMImageModel m6 = new PPMImageModel();
-    PPMImageModel m7 = new PPMImageModel();
-    PPMImageModel m8 = new PPMImageModel();
+    SimpleImageModel m5 = new SimpleImageModel();
+    SimpleImageModel m6 = new SimpleImageModel();
+    SimpleImageModel m7 = new SimpleImageModel();
+    SimpleImageModel m8 = new SimpleImageModel();
 
     m.add(readPPM("/Users/satwikmisra/Desktop/TransformedCopies/blackbuck.ascii.ppm"));
     m2.add(readPPM("/Users/satwikmisra/Desktop/TransformedCopies/blackbuck.ascii.ppm"));
