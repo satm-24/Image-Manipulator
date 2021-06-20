@@ -84,6 +84,11 @@ public class Layer implements ILayer {
   }
 
   @Override
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
   public boolean getVisibility() {
     return this.visible;
   }
@@ -103,7 +108,17 @@ public class Layer implements ILayer {
   }
 
   @Override
+  public String toString() {
+    return "Layer{" +
+        "visible=" + visible +
+        ", name='" + name + '\'' +
+        '}';
+  }
+
+  @Override
   public int hashCode() {
     return Objects.hash(this.visible, this.image, this.name);
   }
 }
+
+

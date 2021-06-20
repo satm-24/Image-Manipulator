@@ -28,4 +28,9 @@ public interface ILayer {
    */
   IGrid getImage();
 
+  /**
+   *
+   * @return
+   */
+  String getName();
 }

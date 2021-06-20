@@ -2,12 +2,14 @@ package controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.imageio.ImageIO;
 import model.IGrid;
 import model.IProcessingImageModel;
 import model.ImageGrid;
 import model.ImageProcessingUtils;
+import model.ImageUtil;
 import model.Pixel;
 import view.ILayer;
 
@@ -16,9 +18,9 @@ import view.ILayer;
  */
 public class SaveImage implements ImageProcessingCommand {
 
-  private String saveLocation;
-  private Enum<FileType> fileType;
-  private List<ILayer> layers;
+  private final String saveLocation;
+  private final Enum<FileType> fileType;
+  private final List<ILayer> layers;
 
   /**
    * Constructs an object of the save image command, with a location the file is saved to.
@@ -31,6 +33,7 @@ public class SaveImage implements ImageProcessingCommand {
 
     ImageProcessingUtils.checkNotNull(saveLocation, "File loc cannot be null.");
     ImageProcessingUtils.checkNotNull(layers, "list of layers cannot be null.");
+    ImageProcessingUtils.checkNotNull(fileType, "filetype cannot be null.");
 
     this.saveLocation = saveLocation;
     this.fileType = fileType;
@@ -59,21 +62,17 @@ public class SaveImage implements ImageProcessingCommand {
 
       if (fileType == FileType.JPEG) {
 
-        BufferedImage bufferedImage = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        for (int x = 0; x < width; x++) {
-          for (int y = 0; y < height; y++) {
-            bufferedImage.setRGB( x, y , pixels[0][0].getClr().getRGB());
+        setPixelsInBufferedImage(pixels, height, width, bufferedImage);
 
-//        ImageIO.write(new BufferedImage(50, 50, ),
-//            "JPEG",
-//            new File("/Users/satwikmisra/Desktop"
-//                + "/smallCat "
-//                + "copy.jpeg"));
-      }
+        try {
+          ImageIO.write(bufferedImage, "JPEG", new File(saveLocation));
+        } catch (IOException e) {
+          System.out.println("Image could not be saved!");
+        }
 
 
-    }
 
 
     if (this.fileType == FileType.JPEG) {

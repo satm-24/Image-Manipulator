@@ -1,16 +1,13 @@
 package controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Function;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
-import model.SimpleImageModel;
 import view.ILayer;
 
 /**
@@ -29,11 +26,10 @@ public class SimpleImageProcessingController implements IProcessingController {
   /**
    * Constructs an object of our controller with the list of layers.
    *
-   *
-   * @param model represents the model the controller acts on
+   * @param model  represents the model the controller acts on
    * @param layers the list of layers
-   * @param rd represents the Readable object used to take user input
-   * @param ap the appendable object used to transmit the output, connected to view
+   * @param rd     represents the Readable object used to take user input
+   * @param ap     the appendable object used to transmit the output, connected to view
    * @throws IllegalArgumentException if either argument is null
    */
   public SimpleImageProcessingController(IProcessingImageModel model, List<ILayer> layers,
@@ -56,23 +52,28 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next()),
         this.layers));
-    knownCommands.put("load", s -> new LoadImage(new File(s.next()), this.layers));
+    knownCommands.put("load", s -> new LoadImage(s.next(), this.layers));
     knownCommands.put("blur", s -> new BlurImage());
     knownCommands.put("sharpen", s -> new SharpenImage());
     knownCommands.put("sepia", s -> new TransformSepia());
     knownCommands.put("greyscale", s -> new TransformGreyscale());
     knownCommands.put("add", s -> new AddLayer(s.next(), this.layers));
-    knownCommands.put("remove", s -> new RemoveLayer(s.next(), this.layers));
-
+    knownCommands.put("remove", s -> new RemoveLayer(this.layers));
 
     // we decided to make this.current an optional in order to avoid making current null when the
     // program begins with no layers.
     if (this.layers.size() >= 1) {
       this.current = Optional.of(this.layers.get(this.layers.size() - 1));
-    }
-    else {
+    } else {
       this.current = Optional.empty();
     }
+  }
+
+  private ILayer getCurrentIfPresent() {
+    if (!this.current.isPresent()) {
+      throw new IllegalArgumentException("Current layer is not present.");
+    }
+    return this.current.get();
   }
 
   /**

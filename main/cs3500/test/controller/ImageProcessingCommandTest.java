@@ -3,6 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Color;
+import model.ImageGrid;
+import model.Pixel;
 import model.SimpleImageModel;
 import model.creators.CreateCheckerboard;
 import org.junit.Before;
@@ -40,37 +42,37 @@ public class ImageProcessingCommandTest {
   @Test(expected = IllegalArgumentException.class)
   public void testAddLayerNullModel() {
     ImageProcessingCommand add = new AddLayer("test", empty);
-    add.execute(null);
+    add.execute(null, new Layer(true, "test"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testRemoveLayerNullModel() {
-    ImageProcessingCommand remove = new RemoveLayer("test", empty);
-    remove.execute(null);
+    ImageProcessingCommand remove = new RemoveLayer(empty);
+    remove.execute(null, new Layer(true, "test"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testBlurLayerNullModel() {
     ImageProcessingCommand blur = new BlurImage();
-    blur.execute(null);
+    blur.execute(null, new Layer(true, "test"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSharpenLayerNullModel() {
     ImageProcessingCommand sharpen = new SharpenImage();
-    sharpen.execute(null);
+    sharpen.execute(null, new Layer(true, "test"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSepiaLayerNullModel() {
     ImageProcessingCommand sepia = new TransformSepia();
-    sepia.execute(null);
+    sepia.execute(null, new Layer(true, "test"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGreyscaleLayerNullModel() {
     ImageProcessingCommand greyscale = new TransformGreyscale();
-    greyscale.execute(null);
+    greyscale.execute(null, new Layer(true, "test"));
   }
 
   @Test

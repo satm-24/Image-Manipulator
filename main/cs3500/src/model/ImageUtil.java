@@ -177,6 +177,19 @@ public class ImageUtil extends java.awt.Color {
     System.out.println();
   }
 
+  public static ImageGrid convertToGrid(BufferedImage img, int width, int height) {
+
+    Pixel[][] pixels = new Pixel[height][width];
+
+    for (int i = 0; i < width; i++) { // width
+      for (int j = 0; j < height; j++) { // height
+        setPixelToRGB(img, pixels, i, j);
+      }
+    }
+
+    return new ImageGrid(pixels, width, height);
+  }
+
   /**
    * Runs the image processing program.
    *
