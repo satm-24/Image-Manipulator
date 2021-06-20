@@ -103,7 +103,6 @@ public class Layer implements ILayer {
     }
     Layer l = (Layer) o;
     return this.visible == l.visible
-        && this.image == l.image
         && this.name.equals(l.name);
   }
 
@@ -117,7 +116,7 @@ public class Layer implements ILayer {
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.visible, this.image, this.name);
+    return Objects.hash(this.visible, this.name);
   }
 }
 

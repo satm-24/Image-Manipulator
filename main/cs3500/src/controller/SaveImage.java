@@ -41,7 +41,7 @@ public class SaveImage implements ImageProcessingCommand {
   }
 
   @Override
-  public void execute(IProcessingImageModel m) {
+  public void execute(IProcessingImageModel m, ILayer current) {
 
     Pixel[][] pixels;
 
@@ -57,6 +57,8 @@ public class SaveImage implements ImageProcessingCommand {
 
     int height = gridToSave.getPixels().length;
     int width = gridToSave.getPixels()[0].length;
+
+    pixels = new Pixel[height][width];
 
     if (fileType != FileType.PPM) {
 
@@ -74,20 +76,41 @@ public class SaveImage implements ImageProcessingCommand {
 
 
 
+      } else if (this.fileType == FileType.PNG) {
 
-    if (this.fileType == FileType.JPEG) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-    } else if (this.fileType == FileType.PNG) {
-//      ImageIO.write(new BufferedImage(50, 50, BufferedImage.TYPE_INT_ARGB),
-//          "PNG",
-//          new File("/Users"
-//          + "/satwikmisra/Desktop"
-//          + "/smallCat "
-//          + "copy.jpeg"));
-    } else if (this.fileType == FileType.PPM) {
+        setPixelsInBufferedImage(pixels, height, width, bufferedImage);
 
+        try {
+          ImageIO.write(bufferedImage, "PNG", new File(saveLocation));
+        } catch (IOException e) {
+          System.out.println("Image could not be saved!");
+        }
+
+      }
+    } else {
+      ImageUtil.writeToPPM(new ImageGrid(pixels, width, height), saveLocation);
+    }
+  }
+
+  /**
+   * Sets the given buffered image to have the rgb values of the given pixel array.
+   *
+   * @param pixels        the pixel array we are getting rgb values from
+   * @param height        the height of the image
+   * @param width         the width of the image
+   * @param bufferedImage the image we are setting the pixels of
+   */
+  private void setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
+      BufferedImage bufferedImage) {
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        bufferedImage.setRGB(x, y, pixels[0][0].getClr().getRGB());
+
+      }
     }
 
-
   }
+
 }

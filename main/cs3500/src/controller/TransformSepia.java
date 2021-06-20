@@ -4,6 +4,8 @@ import model.ImageProcessingUtils;
 import model.TransformationType;
 import model.IProcessingImageModel;
 import model.operations.ColorTransformation;
+import view.ILayer;
+import view.Layer;
 
 /**
  * Represents a command to transform an image to sepia.
@@ -11,8 +13,9 @@ import model.operations.ColorTransformation;
 class TransformSepia implements ImageProcessingCommand {
 
   @Override
-  public void execute(IProcessingImageModel m ) {
+  public void execute(IProcessingImageModel m, ILayer current) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
-    m.operate(new ColorTransformation(TransformationType.SEPIA));
+    current = new Layer(current.getVisibility(),
+        m.operate(new ColorTransformation(TransformationType.SEPIA)), current.getName());
   }
 }

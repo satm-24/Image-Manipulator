@@ -4,6 +4,8 @@ import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import model.TransformationType;
 import model.operations.ColorTransformation;
+import view.Layer;
+import view.ILayer;
 
 /**
  * Represents a command to transform the model to greyscale.
@@ -11,8 +13,9 @@ import model.operations.ColorTransformation;
  class TransformGreyscale implements ImageProcessingCommand {
 
   @Override
-  public void execute(IProcessingImageModel m ) {
+  public void execute(IProcessingImageModel m, ILayer current) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
-    m.operate(new ColorTransformation(TransformationType.GREYSCALE));
+    current = new Layer(current.getVisibility(), m.operate(new ColorTransformation(TransformationType.GREYSCALE)),
+        current.getName());
   }
 }

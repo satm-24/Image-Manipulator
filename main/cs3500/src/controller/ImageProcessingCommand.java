@@ -1,6 +1,7 @@
 package controller;
 
 import model.IProcessingImageModel;
+import view.ILayer;
 
 /**
  * Represents an interface of commands that can be passed in to our image processing program.
@@ -14,5 +15,5 @@ public interface ImageProcessingCommand {
    *
    * @param m the image processing model to be operated on
    */
-  void execute(IProcessingImageModel m);
+  void execute(IProcessingImageModel m, ILayer current);
 }

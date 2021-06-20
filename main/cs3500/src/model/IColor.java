@@ -25,4 +25,11 @@ public interface IColor {
    * @return the duplicate color
    */
   Color copy();
+
+  /**
+   * Returns an int of this color's rgb representation.
+   *
+   * @return the rgb int
+   */
+  int getRGB();
 }

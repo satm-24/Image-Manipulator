@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Optional;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import view.ILayer;
@@ -31,7 +32,7 @@ public class AddLayer implements ImageProcessingCommand {
 
 
   @Override
-  public void execute(IProcessingImageModel m) {
+  public void execute(IProcessingImageModel m, ILayer current) {
 
 
 

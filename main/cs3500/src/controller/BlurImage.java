@@ -4,6 +4,8 @@ import model.FilterType;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import model.operations.Filter;
+import view.ILayer;
+import view.Layer;
 
 /**
  * Represents a command to blur an image using the default blur kernel.
@@ -11,9 +13,10 @@ import model.operations.Filter;
 public class BlurImage implements ImageProcessingCommand {
 
   @Override
-  public void execute(IProcessingImageModel m) {
+  public void execute(IProcessingImageModel m, ILayer current) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 
-    m.operate(new Filter(FilterType.BLUR));
+    current = new Layer(current.getVisibility(), m.operate(new Filter(FilterType.BLUR)),
+            current.getName());
   }
 }

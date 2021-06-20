@@ -118,7 +118,6 @@ public class SimpleImageProcessingController implements IProcessingController {
   @Override
   public void parseInput() {
     Scanner scan = new Scanner(this.rd);
-    IProcessingImageModel m = new SimpleImageModel();
 
     while (scan.hasNext()) {
       ImageProcessingCommand c;
@@ -140,7 +139,12 @@ public class SimpleImageProcessingController implements IProcessingController {
         throw new IllegalArgumentException("Invalid command, or the command does not exist.");
       } else {
         c = cmd.apply(scan);
-        c.execute(m);
+
+        if (current.isPresent()) {
+          c.execute(model, current.get());
+        } else {
+          throw new IllegalStateException("Current is null!");
+        }
       }
 
     }

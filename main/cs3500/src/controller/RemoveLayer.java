@@ -25,7 +25,7 @@ public class RemoveLayer implements ImageProcessingCommand {
 
 
   @Override
-  public void execute(IProcessingImageModel m) {
+  public void execute(IProcessingImageModel m, ILayer current) {
 
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 

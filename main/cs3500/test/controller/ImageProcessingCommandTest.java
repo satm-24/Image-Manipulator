@@ -12,10 +12,12 @@ import org.junit.Test;
 import view.ILayer;
 import view.Layer;
 import model.IGrid;
-import model.IColor;
 import java.lang.StringBuffer;
 import java.io.StringReader;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import model.IColor;
+import java.util.List;
 
 public class ImageProcessingCommandTest {
 
@@ -74,13 +76,7 @@ public class ImageProcessingCommandTest {
     ImageProcessingCommand greyscale = new TransformGreyscale();
     greyscale.execute(null, new Layer(true, "test"));
   }
-
-  @Test
-  public void testBlur() {
-    //model.add(checkerboard2x2);
-    //IProcessingController controller = new SimpleImageProcessingController();
-  }
-
+  
   @Test
   public void testAddLayer() {
     Readable read = new StringReader("add test");
@@ -91,7 +87,69 @@ public class ImageProcessingCommandTest {
     controller.parseInput();
     ILayer testLayer = new Layer(true, "test");
 
+    assertNotEquals(new ArrayList<ILayer>(), empty);
+  }
+  
+  @Test
+  public void testBlurLayer() {
+    Readable read = new StringReader("blur");
+    List<Color> colors = new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255),
+        new Color(0, 0, 0)));
+    IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
+    model.add(checkerboard2x2);
+    IProcessingController controller = new SimpleImageProcessingController(model,
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
+    assertEquals(checkerboard2x2, model.getImageAt(0));
+    controller.parseInput();
+    assertNotEquals(checkerboard2x2, model.getImageAt(1));
+  }
 
-    assertEquals(new ArrayList<ILayer>(Arrays.asList(testLayer)), empty);
+  @Test
+  public void testLoadImage() {
+
+    Pixel[][] pixels = new Pixel[221][234];
+
+    System.out.println(pixels[0][0]);
+
+    for (int i = 0; i < pixels.length; i++) {
+      for (int j = 0; j < pixels[0].length; j++) {
+        pixels[i][j] = new Pixel(new Color(0,0,0));
+      }
+    }
+
+
+    SimpleImageModel model = new SimpleImageModel();
+
+    List<ILayer> layers = new ArrayList<>();
+
+    ImageGrid redSquare = new ImageGrid(pixels, pixels[0].length, pixels.length);
+
+    layers.add(new Layer(true, redSquare, "first"));
+
+    Readable read = new StringReader("load /Users/satwikmisra/Downloads/test.jpg");
+
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
+        layers, read, app);
+
+    controller.parseInput();
+
+
+    System.out.println(layers.get(0).getImage().getPixels()[0][0]);
+
+//    System.out.println(Arrays.deepToString(layers.get(0).getImage().getPixels()));
+
+//    for (Pixel[] x : layers.get(0).getImage().getPixels()) {
+//      for (Pixel p : x) {
+//        System.out.println(p.toString());
+//      }
+//    }
+
+//    assertEquals(5, layers.size());
+
+  }
+
+  @Test
+  public void testSaveImage() {
+
   }
 }

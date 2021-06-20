@@ -11,7 +11,7 @@ import model.operations.IOperation;
  */
 public class SimpleImageModel implements IProcessingImageModel {
 
-  private final List<IGrid> images;
+  public final List<IGrid> images;
 
   /**
    * Constructs an instance of a PPMImage class, initializing the list of images to an empty list.
@@ -31,6 +31,9 @@ public class SimpleImageModel implements IProcessingImageModel {
   @Override
   public IGrid operate(IOperation op) {
     ImageProcessingUtils.checkNotNull(op, "The operation cannot be null.");
+    if (this.images.size() == 0) {
+      throw new IllegalArgumentException("The list of images is empty.");
+    }
     IGrid result = op.apply(this.images.get(this.getImagesSize() - 1));
     this.images.add(result);
     return result;

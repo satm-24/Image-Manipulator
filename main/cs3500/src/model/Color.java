@@ -91,4 +91,9 @@ public class Color implements IColor {
     return new Color(this.red, this.green, this.blue);
   }
 
+  @Override
+  public int getRGB() {
+    int rgb = 65536 * red + 256 * green + blue;
+    return rgb;
+  }
 }
