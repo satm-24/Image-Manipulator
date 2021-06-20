@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-import java.util.Optional;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import view.ILayer;
@@ -38,6 +37,6 @@ public class AddLayer implements ImageProcessingCommand {
 
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 
-    this.layers.add(new Layer(true, this.name));
+    this.layers.add(new Layer(true, this.name, fileLocation));
   }
 }

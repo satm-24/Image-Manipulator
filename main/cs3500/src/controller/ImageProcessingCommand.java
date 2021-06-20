@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.List;
 import model.IProcessingImageModel;
 import view.ILayer;
 
@@ -15,5 +16,5 @@ public interface ImageProcessingCommand {
    *
    * @param m the image processing model to be operated on
    */
-  void execute(IProcessingImageModel m, ILayer current);
+  void execute(IProcessingImageModel m, IProcessingController controller);
 }

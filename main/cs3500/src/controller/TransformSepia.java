@@ -16,6 +16,7 @@ class TransformSepia implements ImageProcessingCommand {
   public void execute(IProcessingImageModel m, ILayer current) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
     current = new Layer(current.getVisibility(),
-        m.operate(new ColorTransformation(TransformationType.SEPIA)), current.getName());
+        m.operate(new ColorTransformation(TransformationType.SEPIA)), current.getName(),
+        fileLocation);
   }
 }

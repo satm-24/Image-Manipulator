@@ -18,6 +18,6 @@ public class SharpenImage implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 
     current = new Layer(current.getVisibility(), m.operate(new Filter(FilterType.SHARPEN)),
-        current.getName());
+        current.getName(), fileLocation);
   }
 }

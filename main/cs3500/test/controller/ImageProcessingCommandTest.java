@@ -16,7 +16,7 @@ import java.lang.StringBuffer;
 import java.io.StringReader;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import model.IColor;
+
 import java.util.List;
 
 public class ImageProcessingCommandTest {
@@ -33,7 +33,7 @@ public class ImageProcessingCommandTest {
 
     model = new SimpleImageModel();
 
-    blankLayer = new Layer(true, "first");
+    blankLayer = new Layer(true, "first", fileLocation);
 
     checkerboard2x2 = new CreateCheckerboard(10, 2,
         new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255), new Color(0,0,0)))).apply();
@@ -44,37 +44,37 @@ public class ImageProcessingCommandTest {
   @Test(expected = IllegalArgumentException.class)
   public void testAddLayerNullModel() {
     ImageProcessingCommand add = new AddLayer("test", empty);
-    add.execute(null, new Layer(true, "test"));
+    add.execute(null, new Layer(true, "test", fileLocation));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testRemoveLayerNullModel() {
     ImageProcessingCommand remove = new RemoveLayer(empty);
-    remove.execute(null, new Layer(true, "test"));
+    remove.execute(null, new Layer(true, "test", fileLocation));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testBlurLayerNullModel() {
     ImageProcessingCommand blur = new BlurImage();
-    blur.execute(null, new Layer(true, "test"));
+    blur.execute(null, new Layer(true, "test", fileLocation));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSharpenLayerNullModel() {
     ImageProcessingCommand sharpen = new SharpenImage();
-    sharpen.execute(null, new Layer(true, "test"));
+    sharpen.execute(null, new Layer(true, "test", fileLocation));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSepiaLayerNullModel() {
     ImageProcessingCommand sepia = new TransformSepia();
-    sepia.execute(null, new Layer(true, "test"));
+    sepia.execute(null, new Layer(true, "test", fileLocation));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGreyscaleLayerNullModel() {
     ImageProcessingCommand greyscale = new TransformGreyscale();
-    greyscale.execute(null, new Layer(true, "test"));
+    greyscale.execute(null, new Layer(true, "test", fileLocation));
   }
   
   @Test
@@ -85,7 +85,7 @@ public class ImageProcessingCommandTest {
         app);
 
     controller.parseInput();
-    ILayer testLayer = new Layer(true, "test");
+    ILayer testLayer = new Layer(true, "test", fileLocation);
 
     assertNotEquals(new ArrayList<ILayer>(), empty);
   }
@@ -98,7 +98,7 @@ public class ImageProcessingCommandTest {
     IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
     model.add(checkerboard2x2);
     IProcessingController controller = new SimpleImageProcessingController(model,
-        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first", fileLocation))), read, app);
     assertEquals(checkerboard2x2, model.getImageAt(0));
     controller.parseInput();
     assertNotEquals(checkerboard2x2, model.getImageAt(1));
@@ -124,7 +124,7 @@ public class ImageProcessingCommandTest {
 
     ImageGrid redSquare = new ImageGrid(pixels, pixels[0].length, pixels.length);
 
-    layers.add(new Layer(true, redSquare, "first"));
+    layers.add(new Layer(true, redSquare, "first", fileLocation));
 
     Readable read = new StringReader("load /Users/satwikmisra/Downloads/test.jpg");
 

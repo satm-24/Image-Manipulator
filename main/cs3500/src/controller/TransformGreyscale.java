@@ -16,6 +16,6 @@ import view.ILayer;
   public void execute(IProcessingImageModel m, ILayer current) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
     current = new Layer(current.getVisibility(), m.operate(new ColorTransformation(TransformationType.GREYSCALE)),
-        current.getName());
+        current.getName(), fileLocation);
   }
 }

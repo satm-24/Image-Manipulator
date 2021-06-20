@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,31 +24,38 @@ public class LoadImage implements ImageProcessingCommand {
    * Constructs an object of LoadImage.
    *
    * @param location the file location we are loading an image from.
-   * @param layers   represents this program's list of layers
    */
-  public LoadImage(String location, List<ILayer> layers) {
+  public LoadImage(String location) {
 
-    ImageProcessingUtils.checkNotNull(layers, "List of layers cannot be null.");
     ImageProcessingUtils.checkNotNull(location, "File loc cannot be null.");
 
-    this.location = location;
-    this.layers = layers;
+    if (new File(location).exists()) {
+      this.location = location;
+    } else {
+      throw new IllegalArgumentException("Invalid load file location!");
+    }
+
   }
 
   @Override
-  public void execute(IProcessingImageModel m, ILayer current) {
+  public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     try {
-     BufferedImage img = ImageIO.read(new File(location));
 
-     ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
+      BufferedImage img = ImageIO.read(new File(location));
 
-      current = new Layer(true, grid, current.getName());
+      ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
+
+      ILayer current = controller.getCurrent();
+
+      current = new Layer(true, grid, controller.getCurrent().getName());
+
+      current.setFileLocation(location);
+
 
     } catch (IOException e) {
       System.out.println("image could not be loaded");
     }
-
 
 
   }

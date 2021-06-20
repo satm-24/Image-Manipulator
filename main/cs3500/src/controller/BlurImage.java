@@ -17,6 +17,6 @@ public class BlurImage implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 
     current = new Layer(current.getVisibility(), m.operate(new Filter(FilterType.BLUR)),
-            current.getName());
+            current.getName(), fileLocation);
   }
 }

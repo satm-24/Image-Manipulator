@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import model.Color;
 import model.IGrid;
 import model.ImageGrid;
@@ -16,6 +17,7 @@ public class Layer implements ILayer {
   private boolean visible = true;
   private final IGrid image;
   private final String name;
+  private String fileLocation = "";
 
   /**
    * Constructs a Layer object that is not a copy of another, but a blank layer.
@@ -44,6 +46,7 @@ public class Layer implements ILayer {
    * @throws IllegalArgumentException if either parameter is null
    */
   public Layer(boolean visible, IGrid image, String name) {
+
 
     ImageProcessingUtils.checkNotNull(image, "Image cannot be null!");
     ImageProcessingUtils.checkNotNull(name, "Name cannot be null!");
@@ -93,6 +96,16 @@ public class Layer implements ILayer {
     return this.visible;
   }
 
+@Override
+  public void setFileLocation(String fileLocation) {
+    this.fileLocation = fileLocation;
+  }
+
+  @Override
+  public String getFileLocation() {
+    return fileLocation;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -113,6 +126,8 @@ public class Layer implements ILayer {
         ", name='" + name + '\'' +
         '}';
   }
+
+
 
   @Override
   public int hashCode() {

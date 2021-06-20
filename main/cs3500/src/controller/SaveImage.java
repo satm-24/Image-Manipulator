@@ -3,7 +3,6 @@ package controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import javax.imageio.ImageIO;
 import model.IGrid;
 import model.IProcessingImageModel;
@@ -11,7 +10,6 @@ import model.ImageGrid;
 import model.ImageProcessingUtils;
 import model.ImageUtil;
 import model.Pixel;
-import view.ILayer;
 
 /**
  * Represents a command to save an image.
@@ -20,37 +18,42 @@ public class SaveImage implements ImageProcessingCommand {
 
   private final String saveLocation;
   private final Enum<FileType> fileType;
-  private final List<ILayer> layers;
 
   /**
    * Constructs an object of the save image command, with a location the file is saved to.
    *
    * @param saveLocation the path of the file location to be saved to
    * @param fileType     the file type that the user has specified
-   * @param layers       represents this program's list of layers
    */
-  public SaveImage(String saveLocation, Enum<FileType> fileType, List<ILayer> layers) {
+  public SaveImage(String saveLocation, Enum<FileType> fileType) {
 
     ImageProcessingUtils.checkNotNull(saveLocation, "File loc cannot be null.");
-    ImageProcessingUtils.checkNotNull(layers, "list of layers cannot be null.");
     ImageProcessingUtils.checkNotNull(fileType, "filetype cannot be null.");
 
-    this.saveLocation = saveLocation;
+    if (new File(saveLocation).exists()) {
+      this.saveLocation = saveLocation;
+    } else {
+      throw new IllegalArgumentException("Invalid save file location!");
+    }
+
     this.fileType = fileType;
-    this.layers = layers;
   }
 
   @Override
-  public void execute(IProcessingImageModel m, ILayer current) {
+  public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    Pixel[][] pixels;
+    if (controller.getLayers().size() < 1) {
+      throw new IllegalStateException("There are no layers to save!");
+    }
 
-    IGrid gridToSave = new ImageGrid(new Pixel[100][100], 0, 0);
+    Pixel[][] pixels = new Pixel[250][250];
 
-    for (int i = this.layers.size() - 1; i >= 0; i--) {
+    IGrid gridToSave = new ImageGrid(pixels, 250, 250);
 
-      if (this.layers.get(i).getVisibility()) {
-        gridToSave = this.layers.get(i).getImage();
+    for (int i = controller.getLayers().size() - 1; i >= 0; i--) {
+
+      if (controller.getLayers().get(i).getVisibility()) {
+        gridToSave = controller.getLayers().get(i).getImage();
         break;
       }
     }
@@ -60,37 +63,49 @@ public class SaveImage implements ImageProcessingCommand {
 
     pixels = new Pixel[height][width];
 
-    if (fileType != FileType.PPM) {
+    if (fileType == FileType.JPEG) {
 
-      if (fileType == FileType.JPEG) {
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_RGB, "JPEG");
 
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    } else if (this.fileType == FileType.PNG) {
 
-        setPixelsInBufferedImage(pixels, height, width, bufferedImage);
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_ARGB, "PNG");
 
-        try {
-          ImageIO.write(bufferedImage, "JPEG", new File(saveLocation));
-        } catch (IOException e) {
-          System.out.println("Image could not be saved!");
-        }
-
-
-
-      } else if (this.fileType == FileType.PNG) {
-
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        setPixelsInBufferedImage(pixels, height, width, bufferedImage);
-
-        try {
-          ImageIO.write(bufferedImage, "PNG", new File(saveLocation));
-        } catch (IOException e) {
-          System.out.println("Image could not be saved!");
-        }
-
-      }
-    } else {
+    } else if (this.fileType == FileType.PPM) {
       ImageUtil.writeToPPM(new ImageGrid(pixels, width, height), saveLocation);
+    }
+  }
+
+  /**
+   *
+   * @param pixels
+   * @param height
+   * @param width
+   * @param typeInt
+   * @param fileType
+   */
+  private void createAndWriteBI(Pixel[][] pixels, int height, int width, int typeInt,
+      String fileType) {
+
+    BufferedImage bufferedImage = new BufferedImage(width, height, typeInt);
+
+    setPixelsInBufferedImage(pixels, height, width, bufferedImage);
+
+    writeBIToFile(bufferedImage, fileType);
+  }
+
+  /**
+   *
+   * @param bufferedImage
+   * @param fileType
+   */
+  private void writeBIToFile(BufferedImage bufferedImage, String fileType) {
+    try {
+
+      ImageIO.write(bufferedImage, fileType, new File(saveLocation));
+
+    } catch (IOException e) {
+      System.out.println("Image could not be saved!");
     }
   }
 
@@ -104,10 +119,10 @@ public class SaveImage implements ImageProcessingCommand {
    */
   private void setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
       BufferedImage bufferedImage) {
+
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-        bufferedImage.setRGB(x, y, pixels[0][0].getClr().getRGB());
-
+        bufferedImage.setRGB(x, y, pixels[y][x].getClr().getRGB());
       }
     }
 

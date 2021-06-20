@@ -18,7 +18,7 @@ public class SimpleImageProcessingController implements IProcessingController {
   private final Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;
   private final IProcessingImageModel model;
   private final List<ILayer> layers;
-  private Optional<ILayer> current;
+  private ILayer current;
   private final Readable rd;
   private final Appendable ap;
 
@@ -50,8 +50,7 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     this.layers = layers;
 
-    knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next()),
-        this.layers));
+    knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next())));
     knownCommands.put("load", s -> new LoadImage(s.next(), this.layers));
     knownCommands.put("blur", s -> new BlurImage());
     knownCommands.put("sharpen", s -> new SharpenImage());
@@ -60,20 +59,18 @@ public class SimpleImageProcessingController implements IProcessingController {
     knownCommands.put("add", s -> new AddLayer(s.next(), this.layers));
     knownCommands.put("remove", s -> new RemoveLayer(this.layers));
 
-    // we decided to make this.current an optional in order to avoid making current null when the
-    // program begins with no layers.
     if (this.layers.size() >= 1) {
-      this.current = Optional.of(this.layers.get(this.layers.size() - 1));
+      this.current = this.layers.get(this.layers.size() - 1);
     } else {
-      this.current = Optional.empty();
+      this.current = null;
     }
   }
 
   private ILayer getCurrentIfPresent() {
-    if (!this.current.isPresent()) {
+    if (this.current == null) {
       throw new IllegalArgumentException("Current layer is not present.");
     }
-    return this.current.get();
+    return this.current;
   }
 
   /**
@@ -128,8 +125,17 @@ public class SimpleImageProcessingController implements IProcessingController {
         return;
       }
 
+      // add invisible/visible command
+
       if (in.equalsIgnoreCase("current")) {
-        this.current = checkAndSetCurrent(scan.next());
+
+        if (isValidLayerName(scan.next())) {
+          this.current = findLayer(scan.next());
+        }
+        else {
+          throw new IllegalArgumentException("invalid input");
+        }
+
       }
 
       Function<Scanner, ImageProcessingCommand> cmd =
@@ -140,8 +146,8 @@ public class SimpleImageProcessingController implements IProcessingController {
       } else {
         c = cmd.apply(scan);
 
-        if (current.isPresent()) {
-          c.execute(model, current.get());
+        if (this.current != null) {
+          c.execute(model, this);
         } else {
           throw new IllegalStateException("Current is null!");
         }
@@ -149,6 +155,56 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     }
 
+  }
+
+  /**
+   *
+   * @param next
+   * @return
+   * @throws IllegalArgumentException
+   */
+  private ILayer findLayer(String next) throws IllegalArgumentException {
+
+    for (ILayer layer : this.layers) {
+      if (layer.getName().equals(next)) {
+        return layer;
+      }
+    }
+
+    throw new IllegalArgumentException("No layer with the given name was found");
+
+  }
+
+  /**
+   *
+   * @param next
+   * @return
+   */
+  private boolean isValidLayerName(String next) {
+
+    for (ILayer layer : this.layers) {
+      if (layer.getName().equals(next)) {
+        return true;
+      }
+    }
+
+    return false;
+
+  }
+
+  @Override
+  public ILayer getCurrent() {
+    return this.current;
+  }
+
+  @Override
+  public List<ILayer> getLayers() {
+    return this.layers;
+  }
+
+  @Override
+  public void setCurrent(ILayer current) {
+    this.current = current;
   }
 
   /**
