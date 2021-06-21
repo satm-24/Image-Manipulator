@@ -1,6 +1,5 @@
 package view;
 
-import java.io.File;
 import model.IGrid;
 
 /**
@@ -30,20 +29,23 @@ public interface ILayer {
   IGrid getImage();
 
   /**
+   * Gets the name of the layer.
    *
-   * @return
+   * @return the name
    */
   String getName();
 
   /**
+   * Gets the location of the file.
    *
-   * @return
+   * @return the file location
    */
   String getFileLocation();
 
   /**
+   * Sets the file location to the given location.
    *
-   * @param fileLocation
+   * @param fileLocation the file location
    */
   void setFileLocation(String fileLocation);
 

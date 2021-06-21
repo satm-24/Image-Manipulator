@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-import java.util.Optional;
 import view.ILayer;
 
 /**
@@ -22,14 +21,16 @@ public interface IProcessingController {
   List<ILayer> getLayers();
 
   /**
+   * Gets the current layer.
    *
-   * @return
+   * @return the current layer
    */
   ILayer getCurrent();
 
   /**
+   * Sets the current layer to the given layer.
    *
-   * @param current
+   * @param current the layer to be set to current
    */
   void setCurrent(ILayer current);
 

@@ -1,8 +1,6 @@
 package controller;
 
-import java.util.List;
 import model.IProcessingImageModel;
-import view.ILayer;
 
 /**
  * Represents an interface of commands that can be passed in to our image processing program.

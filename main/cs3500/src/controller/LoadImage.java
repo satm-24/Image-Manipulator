@@ -52,7 +52,6 @@ public class LoadImage implements ImageProcessingCommand {
 
       controller.getCurrent().setFileLocation(location);
 
-
     } catch (IOException e) {
       System.out.println("image could not be loaded");
     }

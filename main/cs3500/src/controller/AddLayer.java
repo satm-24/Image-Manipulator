@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.List;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import view.ILayer;

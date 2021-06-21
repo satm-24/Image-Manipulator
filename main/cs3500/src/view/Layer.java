@@ -1,12 +1,11 @@
 package view;
 
-import java.io.File;
+import java.util.Objects;
 import model.Color;
 import model.IGrid;
 import model.ImageGrid;
 import model.ImageProcessingUtils;
 import model.Pixel;
-import java.util.Objects;
 
 /**
  * Represents a single layer in an image processing program, which can either be empty or a copy of
@@ -47,7 +46,6 @@ public class Layer implements ILayer {
    */
   public Layer(boolean visible, IGrid image, String name) {
 
-
     ImageProcessingUtils.checkNotNull(image, "Image cannot be null!");
     ImageProcessingUtils.checkNotNull(name, "Name cannot be null!");
 
@@ -63,8 +61,8 @@ public class Layer implements ILayer {
     int width;
 
     if (image == null) {
-      height = 100;
-      width = 100;
+      height = 250;
+      width = 250;
     } else {
       height = image.getPixels().length;
       width = image.getPixels()[0].length;
@@ -96,9 +94,14 @@ public class Layer implements ILayer {
     return this.visible;
   }
 
-@Override
+  @Override
   public void setFileLocation(String fileLocation) {
     this.fileLocation = fileLocation;
+  }
+
+  @Override
+  public void setVisibility(boolean visible) {
+    this.visible = visible;
   }
 
   @Override
@@ -110,8 +113,7 @@ public class Layer implements ILayer {
   public boolean equals(Object o) {
     if (this == o) {
       return true;
-    }
-    else if (!(o instanceof Layer)) {
+    } else if (!(o instanceof Layer)) {
       return false;
     }
     Layer l = (Layer) o;
@@ -126,7 +128,6 @@ public class Layer implements ILayer {
         ", name='" + name + '\'' +
         '}';
   }
-
 
 
   @Override
