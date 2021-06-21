@@ -33,4 +33,22 @@ public interface IProcessingController {
    */
   void setCurrent(ILayer current);
 
+  /**
+   * Sets the current layer in the list of layers.
+   */
+  void setCurrentInLayers(ILayer layer);
+
+  /**
+   * Removes the current layer in the list of layers.
+   */
+  void removeCurrent();
+
+
+  /**
+   * Delegates error message to view.
+   *
+   * @param msg error msg.
+   */
+  void tryToRenderError(String msg);
+
 }

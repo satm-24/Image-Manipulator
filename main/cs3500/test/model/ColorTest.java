@@ -3,7 +3,6 @@ package model;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import model.Color;
 import org.junit.Before;
 import org.junit.Test;
 

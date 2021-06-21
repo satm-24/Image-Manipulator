@@ -61,7 +61,7 @@ public class SaveImage implements ImageProcessingCommand {
     int height = gridToSave.getPixels().length;
     int width = gridToSave.getPixels()[0].length;
 
-    pixels = new Pixel[height][width];
+    pixels = gridToSave.getPixels();
 
     if (fileType == FileType.JPEG) {
 
@@ -77,12 +77,13 @@ public class SaveImage implements ImageProcessingCommand {
   }
 
   /**
+   * Creates a bufferedImage with the given dimensions and writes it to a file.
    *
-   * @param pixels
-   * @param height
-   * @param width
-   * @param typeInt
-   * @param fileType
+   * @param pixels   the pixels we want the BI ot have
+   * @param height   image height
+   * @param width    image width
+   * @param typeInt  typeInt of bufferedImage
+   * @param fileType type of file we are writing to
    */
   private void createAndWriteBI(Pixel[][] pixels, int height, int width, int typeInt,
       String fileType) {
@@ -95,9 +96,10 @@ public class SaveImage implements ImageProcessingCommand {
   }
 
   /**
+   * Writes a bufferedimage to a file at the given loc.
    *
-   * @param bufferedImage
-   * @param fileType
+   * @param bufferedImage BI to write
+   * @param fileType      type of file we are writing
    */
   private void writeBIToFile(BufferedImage bufferedImage, String fileType) {
     try {
@@ -119,6 +121,8 @@ public class SaveImage implements ImageProcessingCommand {
    */
   private void setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
       BufferedImage bufferedImage) {
+
+    System.out.println(pixels[0][0]);
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {

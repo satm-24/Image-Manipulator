@@ -1,13 +1,14 @@
 Java Image Processing Designed by: Satwik Misra and Steven Ngo
 
 This project is an image processing program for different types of image formats. Currently, the
-first version only supports PPM images in a P3 format, with the only modification being filtering
-and color transformation. This project also supports programmatically creating images, though the
-only implementation thus far is to create a PPM image in a checkerboard pattern. We utilized
-IntelliJ IDEA to develop the code. In the future, we hope to implement support for other file types
-such as JPG and PNG, as well as other transformation types such as adjusting saturation and
-brightness. The current filter only supports sharpening and blurring, and the color transformation
-supports sepia and greyscale, as well as any custom matrix.
+first version only supports PPM, PNG and JPG, with the only modification being filtering and color
+transformation. This project also supports programmatically creating images, though the only
+implementation thus far is to create an image in a checkerboard pattern. We utilized IntelliJ IDEA
+to develop the code. In the future, we hope to implement support for other file types, as well as
+other transformation types such as adjusting saturation and brightness. The current filter only
+supports sharpening and blurring, and the color transformation supports sepia and greyscale, as well
+as any custom matrix. The program takes in commands from a script, which can be further elaborated
+on in the USEME.
 
 Model Overview:
 
@@ -24,7 +25,14 @@ Interfaces:
 - IPixel: represents different types of pixels, which are single instances of color of an image and
   holds functionality for support in editing pixels
 - IProcessingImageModel: represents models for the image processing program, dependent on which file
-  type is to be supported Classes:
+  type is to be supported
+- ImageProcessingCommand: represents all different types of commands in the image processing program
+- IProcessingController: represents types of controllers for the image processing program
+- ILayer: represents types of layers of images
+- IProcessingImageView: represents types of views for the image processing program
+
+Classes:
+
 - CreateCheckerboard: represents a function object that programmatically creates a checkerboard
   pattern
 - ColorTransformation: represents a function object that transforms an image based on a
@@ -43,6 +51,20 @@ Interfaces:
   holds methods that returns the kernel for a given type
 - TransformationType: represents the different predefined transformation types, such as sepia and
   greyscale, as well as any future ones to be added
+- AddLayer: command for adding a layer
+- BlurImage: command for blurring an image
+- ExportImage: command for exporting an image
+- LoadImage: command for loading an image
+- RemoveLayer: command for removing a layer
+- SaveImage: command for saving an image
+- SharpenImage: command for sharpening an image
+- SimpleImageProcessingController: represents a simple image processing controller that handles
+  inputs and outputs to process an image
+- TransformGreyscale: command for transforming an image to greyscale
+- TransformSepia: command for transforming an image to sepia
+- Layer: represents a single layer of an image
+- SimpleProcessingImageView: represents a simple viewer for the image processing program that
+  outputs errors
 
 Citations:
 Both blackbuck.ascii.ppm and snail.ascii.ppm were PPM images found at

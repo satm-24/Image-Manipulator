@@ -22,7 +22,6 @@ public class ExportLayers implements ImageProcessingCommand {
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-
     try {
 
       File exportedLayers = new File(exportLocation);

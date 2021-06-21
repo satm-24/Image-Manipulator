@@ -2,12 +2,6 @@ package model;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import model.Color;
-import model.FilterType;
-import model.IGrid;
-import model.ImageGrid;
-import model.Pixel;
-import model.TransformationType;
 import model.operations.ColorTransformation;
 import model.operations.Filter;
 import org.junit.Test;

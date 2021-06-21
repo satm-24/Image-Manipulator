@@ -12,31 +12,29 @@ import view.Layer;
 public class AddLayer implements ImageProcessingCommand {
 
   private String name;
-  private List<ILayer> layers;
 
   /**
    * Constructs an AddLayer object that is named.
    *
    * @param name the same of the layer we are creating
-   * @param layers represents this program's list of layers
    */
-  public AddLayer(String name, List<ILayer> layers) {
+  public AddLayer(String name) {
 
-    ImageProcessingUtils.checkNotNull(layers, "List of layers cannnot be null.");
     ImageProcessingUtils.checkNotNull(name, "Name cannnot be null.");
-
     this.name = name;
-    this.layers = layers;
   }
 
 
   @Override
-  public void execute(IProcessingImageModel m, ILayer current) {
-
-
+  public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
 
-    this.layers.add(new Layer(true, this.name, fileLocation));
+    ILayer newLayer = new Layer(true, this.name);
+
+    controller.getLayers().add(newLayer);
+    controller.setCurrent(newLayer);
+
+    m.add(newLayer.getImage());
   }
 }

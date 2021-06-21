@@ -13,11 +13,14 @@ import view.Layer;
 public class SharpenImage implements ImageProcessingCommand {
 
   @Override
-  public void execute(IProcessingImageModel m, ILayer current) {
-
+  public void execute(IProcessingImageModel m, IProcessingController controller) {
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
-
-    current = new Layer(current.getVisibility(), m.operate(new Filter(FilterType.SHARPEN)),
-        current.getName(), fileLocation);
+    ImageProcessingUtils.checkNotNull(controller, "Controller cannot be null.");
+    ImageProcessingUtils.checkNotNull(controller.getCurrent(), "Current cannot be null.");
+    ILayer current = new Layer(controller.getCurrent().getVisibility(),
+        m.operate(new Filter(FilterType.SHARPEN)), controller.getCurrent()
+        .getName());
+    controller.setCurrentInLayers(current);
+    controller.setCurrent(current);
   }
 }

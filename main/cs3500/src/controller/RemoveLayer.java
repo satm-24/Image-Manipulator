@@ -10,29 +10,18 @@ import view.ILayer;
  */
 public class RemoveLayer implements ImageProcessingCommand {
 
-  private final List<ILayer> layers;
-
-  /**
-   * Constructs an RemoveLayer object that is named.
-   * @param layers represents this program's list of layers
-   */
-  public RemoveLayer( List<ILayer> layers) {
-
-    ImageProcessingUtils.checkNotNull(layers, "List of layers cannot be null.");
-
-    this.layers = layers;
-  }
-
-
   @Override
-  public void execute(IProcessingImageModel m, ILayer current) {
+  public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
+    ImageProcessingUtils.checkNotNull(controller, "Controller cannot be null.");
+    ImageProcessingUtils.checkNotNull(controller.getCurrent(), "Current cannot be null.");
 
-    if (this.layers.size() == 0) {
+    if (controller.getLayers().size() == 0) {
       throw new IllegalArgumentException("The list of layers is empty!");
     }
 
-    this.layers.remove(current);
+    controller.removeCurrent();
+    m.remove(controller.getCurrent().getImage());
   }
 }

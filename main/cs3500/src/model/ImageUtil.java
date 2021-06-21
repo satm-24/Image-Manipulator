@@ -9,7 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
+import model.operations.ColorTransformation;
+import model.operations.Filter;
 
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.
@@ -110,73 +111,31 @@ public class ImageUtil extends java.awt.Color {
 
   }
 
-  // tests writing PNG and JPEG files to PPM format
-  public static void writeDiffFormatsToPPM() throws IOException {
-
-    File fileJPEG = new File("/Users/satwikmisra/Desktop/smallCat.jpeg");
-
-    File filePNG = new File("/Users/satwikmisra/Desktop/mario.png");
-
-
-    BufferedImage imgJPEG = ImageIO.read(fileJPEG);
-    BufferedImage imgPNG = ImageIO.read(filePNG);
-
-    int width = imgJPEG.getWidth();
-    int height = imgJPEG.getHeight();
-
-    int widthPNG = imgPNG.getWidth();
-    int heightPNG = imgPNG.getHeight();
-
-    ImageIO.write(imgJPEG, "JPEG", new File("/Users/satwikmisra/Desktop/smallCat copy.jpeg"));
-
-    ImageIO.write(imgPNG, "PNG", new File("/Users/satwikmisra/Desktop/mariocopy.png"));
-
-    Pixel[][] pixels = new Pixel[height][width];
-
-    Pixel[][] pixels2 = new Pixel[heightPNG][widthPNG];
-
-   for (int i = 0; i < 300; i++) { // width
-     for (int j = 0; j < 200; j++) { // height
-       setPixelToRGB(imgJPEG, pixels, i, j);
-     }
-   }
-
-    for (int i = 0; i < widthPNG; i++) { // width
-      for (int j = 0; j < heightPNG; j++) { // height
-        setPixelToRGB(imgPNG, pixels2, i, j);
-      }
-    }
-
-   for (int i = 0; i < pixels.length; i++) {
-     for (int j = 0; j < pixels[0].length; j++) {
-//       System.out.println("Pixel at (" + i + ", " + j + "): " + pixels[i][j]);
-     }
-   }
-
-   ImageGrid gridJPEG = new ImageGrid(pixels, width, height);
-
-   ImageGrid gridPNG = new ImageGrid(pixels2, widthPNG, heightPNG);
-
-   writeToPPM(gridJPEG, "/Users/satwikmisra/Desktop/smallCat.ppm");
-   writeToPPM(gridPNG, "/Users/satwikmisra/Desktop/mario.ppm");
-
-  }
 
   /**
    * Sets the rgb values from the given image to a certain pixel location.
-   * @param imgPNG the given image
+   *
+   * @param imgPNG  the given image
    * @param pixels2 the array of pixels we're mutating
-   * @param i the row index
-   * @param j the col index
+   * @param i       the row index
+   * @param j       the col index
    */
   private static void setPixelToRGB(BufferedImage imgPNG, Pixel[][] pixels2, int i, int j) {
-    int r = new ImageUtil(imgPNG.getRGB(i,j)).getRed();
-    int g = new ImageUtil(imgPNG.getRGB(i,j)).getGreen();
-    int b = new ImageUtil(imgPNG.getRGB(i,j)).getBlue();
+    int r = new ImageUtil(imgPNG.getRGB(i, j)).getRed();
+    int g = new ImageUtil(imgPNG.getRGB(i, j)).getGreen();
+    int b = new ImageUtil(imgPNG.getRGB(i, j)).getBlue();
     pixels2[j][i] = new Pixel(new Color(r, g, b));
     System.out.println();
   }
 
+  /**
+   * Converts the given BI to an ImageGrid.
+   *
+   * @param img    given BI
+   * @param width  width of BI
+   * @param height height of BI
+   * @return imagegrid rep of BI
+   */
   public static ImageGrid convertToGrid(BufferedImage img, int width, int height) {
 
     Pixel[][] pixels = new Pixel[height][width];
@@ -197,8 +156,6 @@ public class ImageUtil extends java.awt.Color {
    */
   public static void main(String[] args) throws IOException {
 
-    writeDiffFormatsToPPM();
-
     String filename;
 
     if (args.length > 0) {
@@ -209,7 +166,7 @@ public class ImageUtil extends java.awt.Color {
 
     System.out.println(new File("/Users/satwikmisra/Desktop/koalaTest.ppm"));
 
-   // ImageUtil.writeToPPM(readPPM(filename), "/Users/satwikmisra/Desktop/koalaTest.ppm");
+    ImageUtil.writeToPPM(readPPM(filename), "/Users/satwikmisra/Desktop/koalaTest.ppm");
 
 
     /*
@@ -217,7 +174,6 @@ public class ImageUtil extends java.awt.Color {
     files.
      */
 
-    /*
     SimpleImageModel m = new SimpleImageModel();
     SimpleImageModel m2 = new SimpleImageModel();
     SimpleImageModel m3 = new SimpleImageModel();
@@ -283,7 +239,7 @@ public class ImageUtil extends java.awt.Color {
     ImageUtil.writeToPPM((ImageGrid) img8,
         "/Users/satwikmisra/Desktop/TransformedCopies/sharpSnail.ppm");
 
-    */
+
   }
 
 

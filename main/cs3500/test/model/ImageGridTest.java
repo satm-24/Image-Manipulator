@@ -5,14 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Color;
-import model.FilterType;
-import model.IGrid;
-import model.ImageUtil;
-import model.ImageGrid;
-import model.SimpleImageModel;
-import model.Pixel;
-import model.TransformationType;
 import model.operations.ColorTransformation;
 import model.operations.Filter;
 import org.junit.Before;

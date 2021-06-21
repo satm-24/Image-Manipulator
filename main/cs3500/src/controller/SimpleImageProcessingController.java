@@ -77,7 +77,7 @@ public class SimpleImageProcessingController implements IProcessingController {
    * Converts a string to a file type enum.
    *
    * @param next the String we are converting
-   * @return the Enum<FileType> representing what file type the string is.
+   * @return the FileType representing what file type the string is.
    * @throw IllegalArgumentException if the string is not a valid file type
    */
   private Enum<FileType> convertToFileType(String next) {

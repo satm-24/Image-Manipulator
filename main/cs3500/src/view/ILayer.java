@@ -46,4 +46,11 @@ public interface ILayer {
    * @param fileLocation
    */
   void setFileLocation(String fileLocation);
+
+  /**
+   * Sets the visibility of the layer to the given boolean.
+   *
+   * @param visible whether or not the layer is visible
+   */
+  void setVisibility(boolean visible);
 }

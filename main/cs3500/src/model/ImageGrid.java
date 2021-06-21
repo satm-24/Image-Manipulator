@@ -15,6 +15,8 @@ public class ImageGrid implements IGrid {
   // this was made protected because we have to modify pixel colors from the default (black) when
   // taking in images.
   protected Pixel[][] pixels;
+
+
   private final int width;
   private final int height;
 
@@ -29,9 +31,26 @@ public class ImageGrid implements IGrid {
 
     checkNotNull(pixels, "Pixels cannot be null");
 
+    populatePixels();
+
     this.pixels = pixels;
     this.width = width;
     this.height = height;
+  }
+
+  /**
+   * Populates this grid's pixels as a starting point if they are null.
+   */
+  private void populatePixels() {
+
+    this.pixels = new Pixel[250][250];
+
+    for (int i = 0; i < 250; i++) {
+      for (int j = 0; j < 250; j++) {
+        this.pixels[i][j] = new Pixel(new Color(0, 0, 0));
+      }
+    }
+
   }
 
 
@@ -87,6 +106,63 @@ public class ImageGrid implements IGrid {
     int oldRow = 0;
     int oldCol = 0;
 
+    populateGridWithPadding(paddingVal, oldPixels, gridPixelsWithPadding, oldRow, oldCol);
+
+    initGridPixelsWithPaddingIfNull(gridPixelsWithPadding);
+
+    transformFilteredPixels(kernel, transformedPxls, gridPixelsWithPadding);
+
+    return transformedImg;
+  }
+
+  /**
+   * Transforms pixeling using filtering formula and ads them to new pixel grid.
+   *
+   * @param kernel                what we use for filter
+   * @param transformedPxls       new pixel grid
+   * @param gridPixelsWithPadding old grid we're getting pixels from
+   */
+  private void transformFilteredPixels(double[][] kernel, Pixel[][] transformedPxls,
+      Pixel[][] gridPixelsWithPadding) {
+    for (int i = 0; i < transformedPxls.length; i++) {
+      for (int j = 0; j < transformedPxls[0].length; j++) {
+
+        transformedPxls[i][j] = calcNeighboringSum(gridPixelsWithPadding,
+            kernel, i, j);
+
+      }
+    }
+  }
+
+  /**
+   * Inits the grid pixels with padding to change nulls to pixels.
+   *
+   * @param gridPixelsWithPadding the pixels we are changign
+   */
+  private void initGridPixelsWithPaddingIfNull(Pixel[][] gridPixelsWithPadding) {
+    for (int i = 0; i < gridPixelsWithPadding.length; i++) {
+      for (int j = 0; j < gridPixelsWithPadding[0].length; j++) {
+
+        if (gridPixelsWithPadding[i][j] == null) {
+          gridPixelsWithPadding[i][j] = new Pixel();
+        }
+
+      }
+    }
+  }
+
+  /**
+   * Populate values from old grid to padded grid.
+   *
+   * @param paddingVal            how much padding we have
+   * @param oldPixels             old grid
+   * @param gridPixelsWithPadding new grid
+   * @param oldRow                row index of old grid
+   * @param oldCol                col index of old grid
+   */
+  private void populateGridWithPadding(int paddingVal, Pixel[][] oldPixels,
+      Pixel[][] gridPixelsWithPadding,
+      int oldRow, int oldCol) {
     for (int i = paddingVal; i < gridPixelsWithPadding.length - paddingVal; i++) {
       for (int j = paddingVal; j < gridPixelsWithPadding[0].length - paddingVal; j++) {
 
@@ -98,28 +174,6 @@ public class ImageGrid implements IGrid {
       oldCol = 0;
       oldRow++;
     }
-
-    for (int i = 0; i < gridPixelsWithPadding.length; i++) {
-      for (int j = 0; j < gridPixelsWithPadding[0].length; j++) {
-
-        if (gridPixelsWithPadding[i][j] == null) {
-          gridPixelsWithPadding[i][j] = new Pixel();
-        }
-
-      }
-    }
-
-    for (int i = 0; i < transformedPxls.length; i++) {
-      for (int j = 0; j < transformedPxls[0].length; j++) {
-
-        transformedPxls[i][j] = calcNeighboringSum(gridPixelsWithPadding,
-            kernel, i, j);
-
-      }
-
-    }
-
-    return transformedImg;
   }
 
   /**

@@ -47,4 +47,12 @@ public interface IProcessingImageModel {
    * @param image the image to be added
    */
   void add(IGrid image);
+
+  /**
+   * Removes a given image from a model's list of images.
+   *
+   * @param image img to be removed.
+   */
+  void remove(IGrid image);
+
 }
