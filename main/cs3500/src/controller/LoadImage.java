@@ -3,13 +3,11 @@ package controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import javax.imageio.ImageIO;
 import model.IProcessingImageModel;
 import model.ImageGrid;
 import model.ImageProcessingUtils;
 import model.ImageUtil;
-import view.ILayer;
 import view.Layer;
 
 /**
@@ -17,8 +15,7 @@ import view.Layer;
  */
 public class LoadImage implements ImageProcessingCommand {
 
-  private String location;
-  private List<ILayer> layers;
+  private final String location;
 
   /**
    * Constructs an object of LoadImage.
@@ -28,38 +25,43 @@ public class LoadImage implements ImageProcessingCommand {
   public LoadImage(String location) {
 
     ImageProcessingUtils.checkNotNull(location, "File loc cannot be null.");
+    this.location = location;
 
-
-    if (new File(location).exists()) {
-      this.location = location;
-    } else {
-      throw new IllegalArgumentException("Invalid load file location!");
-    }
 
   }
 
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    try {
-
-      BufferedImage img = ImageIO.read(new File(location));
-
-      ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
-
-      controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
-
-      controller.getCurrent().setFileLocation(location);
-
-      controller.renderMessageToView(
-          "Loaded image at: " + location + " to current layer " +
-              controller.getCurrent().getName());
-
-
-    } catch (IOException e) {
-      System.out.println("image could not be loaded");
+    if (controller.getCurrent() == null) {
+      controller.renderMessageToView("Current ");
     }
 
+    if (new File(location).exists()) {
+
+      try {
+
+        BufferedImage img = ImageIO.read(new File(location));
+
+        ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
+
+
+
+        controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
+
+        controller.getCurrent().setFileLocation(location);
+
+        controller.renderMessageToView(
+            "Loaded image at: " + location + " to current layer " +
+                controller.getCurrent().getName() + "\n");
+
+
+      } catch (IOException e) {
+        System.out.println("image could not be loaded \n");
+      }
+    } else {
+      controller.renderMessageToView("Invalid load file location! \n");
+    }
 
   }
 }

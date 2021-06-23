@@ -299,6 +299,8 @@ public class SimpleImageProcessingController implements IProcessingController {
   @Override
   public void setCurrent(ILayer current) {
     if (this.current == null) {
+      System.out.println(current);
+
       this.current = current;
     } else {
       this.layers.remove(current);

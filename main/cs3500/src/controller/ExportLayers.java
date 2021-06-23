@@ -33,7 +33,13 @@ public class ExportLayers implements ImageProcessingCommand {
         FileWriter writeIndividualFiles = new FileWriter(exportLocation);
 
         for (ILayer layer : controller.getLayers()) {
-          writeIndividualFiles.write(layer.getFileLocation() + "\n");
+
+          if (layer.getFileLocation().equals("")) {
+            controller.renderMessageToView(
+                "There is no image file at layer" + " \"" + layer.getName() + "\".");
+          } else {
+            writeIndividualFiles.write(layer.getFileLocation() + "\n");
+          }
         }
 
         writeIndividualFiles.close();
