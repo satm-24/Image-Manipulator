@@ -125,7 +125,6 @@ public class ImageUtil extends java.awt.Color {
     int g = new ImageUtil(imgPNG.getRGB(i, j)).getGreen();
     int b = new ImageUtil(imgPNG.getRGB(i, j)).getBlue();
     pixels2[j][i] = new Pixel(new Color(r, g, b));
-    System.out.println();
   }
 
   /**

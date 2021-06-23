@@ -18,7 +18,6 @@ public class AddLayer implements ImageProcessingCommand {
    * @param name the same of the layer we are creating
    */
   public AddLayer(String name) {
-
     ImageProcessingUtils.checkNotNull(name, "Name cannnot be null.");
     this.name = name;
   }
@@ -35,5 +34,7 @@ public class AddLayer implements ImageProcessingCommand {
     controller.setCurrent(newLayer);
 
     m.add(newLayer.getImage());
+
+    controller.renderMessageToView("Created new layer: \"" + newLayer.getName() + "\" \n");
   }
 }

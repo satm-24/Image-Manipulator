@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,10 +36,11 @@ public class SimpleImageProcessingController implements IProcessingController {
 
   private final Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;
   private final IProcessingImageModel model;
+  private final IProcessingImageView view;
   private final List<ILayer> layers;
   private ILayer current;
   private final Readable rd;
-  private final IProcessingImageView view;
+
 
 
   /**
@@ -77,6 +77,7 @@ public class SimpleImageProcessingController implements IProcessingController {
     knownCommands.put("sepia", s -> new TransformSepia());
     knownCommands.put("greyscale", s -> new TransformGreyscale());
     knownCommands.put("add", s -> new AddLayer(s.next()));
+    knownCommands.put("remove", s -> new RemoveLayer());
     knownCommands.put("export", s -> new ExportLayers(s.next()));
     knownCommands.put("loadmany", s -> new LoadMany(s.next()));
 
@@ -92,7 +93,6 @@ public class SimpleImageProcessingController implements IProcessingController {
    *
    * @param next the String we are converting
    * @return the FileType representing what file type the string is.
-   * @throw IllegalArgumentException if the string is not a valid file type
    */
   private Enum<FileType> convertToFileType(String next) {
 
@@ -107,7 +107,7 @@ public class SimpleImageProcessingController implements IProcessingController {
           return FileType.PPM;
 
         default:
-          tryToRenderError("String is not a valid file type. Try again");
+          renderMessageToView("String is not a valid file type. Try again");
       }
 
     }
@@ -127,52 +127,20 @@ public class SimpleImageProcessingController implements IProcessingController {
 
       String in = scan.next();
 
-      if (in.equals("invisible")) {
-        determineAndSetVisibility(scan, in, "invisible", false);
-        in = scan.next();
-      }
-
-      if (in.equals("visible")) {
-        determineAndSetVisibility(scan, in, "visible", true);
-        in = scan.next();
-      }
+      processVisibilityInput(scan, in);
 
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
-        try {
-          this.view.renderError("Program has quit.");
-          return;
-        } catch (IOException e) {
-          throw new IllegalArgumentException("Message could not be appended.");
-        }
+        this.view.renderMessage("Program has quit.");
+        return;
       }
 
-      if (in.equalsIgnoreCase("current")) {
-
-        String layerName = scan.next();
-
-        System.out.println(layerName);
-
-        if (isValidLayerName(layerName)) {
-
-          this.current = findLayer(layerName);
-
-          in = scan.next();
-
-          System.out.println(this.current.getName());
-
-
-        } else {
-          tryToRenderError("invalid input");
-          in = scan.next();
-        }
-
-      }
+      processCurrentLayerInput(scan, in);
 
       Function<Scanner, ImageProcessingCommand> cmd =
           knownCommands.getOrDefault(in, null);
 
       if (cmd == null) {
-        tryToRenderError("Invalid command, or the command does not exist.");
+        renderMessageToView("Invalid command, or the command does not exist.\n");
       } else {
         c = cmd.apply(scan);
 
@@ -181,42 +149,102 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     }
 
-    return;
+  }
 
+  @Override
+  public boolean checkNullCurrent() {
+    if (this.current == null) {
+      renderMessageToView("The current layer is null. Please set a layer as "
+          + "\"current\" and try again. \n");
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
-   * Sets the layer to the given visibility.
-   *
-   * @param scan      the scanner
-   * @param in        the visibility type
-   * @param invisible the visibility string
-   * @param b         whether the visility type is true or false
+   * @param scan
+   * @param in
    */
-  private void determineAndSetVisibility(Scanner scan, String in, String invisible, boolean b) {
-    if (in.equalsIgnoreCase(invisible)) {
+  private void processCurrentLayerInput(Scanner scan, String in) {
+    while (in.equalsIgnoreCase("current")) {
 
       String layerName = scan.next();
 
       if (isValidLayerName(layerName)) {
-        for (ILayer l : this.layers) {
-          if (l.getName().equals(layerName)) {
-            l.setVisibility(b);
-          }
-        }
+
+        this.current = findLayer(layerName);
+
+        this.view.renderMessage("Current layer is now: \"" + this.current.getName() + "\" \n");
+
+        in = scan.next();
+
+
       } else {
-        tryToRenderError("Invalid layer name.");
+        renderMessageToView("Could not set current, invalid layer name. \n");
+        in = scan.next();
       }
     }
   }
 
-  @Override
-  public void tryToRenderError(String msg) {
-    try {
-      this.view.renderError(msg);
-    } catch (IOException e) {
-      throw new IllegalArgumentException("Message could not be appended.");
+  /**
+   * @param scan
+   * @param in
+   */
+  private void processVisibilityInput(Scanner scan, String in) {
+
+    while (in.equalsIgnoreCase("invisible") ||
+        in.equalsIgnoreCase("visible")) {
+
+      if (in.equals("invisible")) {
+
+        String layerName = scan.next();
+
+        determineAndSetVisibility(layerName, false);
+        this.view.renderMessage("Layer \"" + layerName + "\" was set to invisible.\n");
+
+        in = scan.next();
+
+      }
+
+      if (in.equals("visible")) {
+
+        String layerName = scan.next();
+
+        determineAndSetVisibility(layerName, true);
+        this.view.renderMessage("Layer \"" + layerName + "\" was set to visible.\n");
+
+        in = scan.next();
+
+
+      }
     }
+  }
+
+
+  /**
+   * Sets the layer to the given visibility.
+   *
+   * @param layerName name of the layer we are searching for
+   * @param b         whether the visility type is true or false
+   */
+  private void determineAndSetVisibility(String layerName, boolean b) {
+
+    if (isValidLayerName(layerName)) {
+      for (ILayer l : this.layers) {
+        if (l.getName().equals(layerName)) {
+          l.setVisibility(b);
+        }
+      }
+    } else {
+      renderMessageToView("Invalid layer name. + \n");
+    }
+  }
+
+  @Override
+  public void renderMessageToView(String msg) {
+    this.view.renderMessage(msg);
   }
 
   /**

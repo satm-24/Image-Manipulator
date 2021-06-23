@@ -50,6 +50,11 @@ public interface IProcessingController {
    *
    * @param msg error msg.
    */
-  void tryToRenderError(String msg);
+  void renderMessageToView(String msg);
 
+  /**
+   *
+   * @return
+   */
+  boolean checkNullCurrent();
 }

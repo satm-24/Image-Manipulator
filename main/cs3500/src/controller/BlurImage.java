@@ -17,10 +17,14 @@ public class BlurImage implements ImageProcessingCommand {
 
     ImageProcessingUtils.checkNotNull(m, "Model cannot be null.");
     ImageProcessingUtils.checkNotNull(controller, "Controller cannot be null.");
-    ImageProcessingUtils.checkNotNull(controller.getCurrent(), "Current cannot be null.");
+
+    if (controller.checkNullCurrent()) {
+      return;
+    }
 
     if (controller.getCurrent().getFileLocation().equals("")) {
-      controller.tryToRenderError("There are no layers to blur.");
+      controller.renderMessageToView("There are no image to blur."
+          + " Please populate a layer. \n");
       return;
     }
 
@@ -29,5 +33,8 @@ public class BlurImage implements ImageProcessingCommand {
 
     controller.setCurrentInLayers(current);
     controller.setCurrent(current);
+
+    controller.renderMessageToView("Blurred layer: \"" + current.getName() + "\" \n");
+
   }
 }

@@ -21,7 +21,15 @@ public class SimpleProcessingImageView implements IProcessingImageView {
   }
 
   @Override
-  public void renderError(String message) throws IOException {
-    this.out.append(message);
+  public void renderMessage(String message) {
+
+    try {
+      this.out.append(message);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Message could not be appended.");
+    }
+
   }
+
+
 }

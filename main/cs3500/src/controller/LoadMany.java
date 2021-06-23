@@ -35,7 +35,7 @@ public class LoadMany implements ImageProcessingCommand {
     try {
       writer = new FileWriter(fileLocation);
     } catch (IOException e) {
-      controller.tryToRenderError("Could not write file");
+      controller.renderMessageToView("Could not write file");
       throw new IllegalArgumentException("Could not write to file");
     }
 
@@ -43,7 +43,7 @@ public class LoadMany implements ImageProcessingCommand {
       try {
         writer.write(layer.getFileLocation() + "\n");
       } catch (IOException e) {
-        controller.tryToRenderError("Could not write file");
+        controller.renderMessageToView("Could not write file");
         throw new IllegalArgumentException("Could not write to file");
       }
     }
@@ -51,7 +51,7 @@ public class LoadMany implements ImageProcessingCommand {
     try {
       writer.close();
     } catch (IOException e) {
-      controller.tryToRenderError("Could not close");
+      controller.renderMessageToView("Could not close");
       throw new IllegalArgumentException("Could not close writer");
     }
 

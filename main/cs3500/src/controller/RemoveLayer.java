@@ -16,10 +16,15 @@ public class RemoveLayer implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(controller.getCurrent(), "Current cannot be null.");
 
     if (controller.getLayers().size() == 0) {
-      throw new IllegalArgumentException("The list of layers is empty!");
-    }
+      controller.renderMessageToView("The list of layers is empty! \n");
+    } else {
 
-    controller.removeCurrent();
-    m.remove(controller.getCurrent().getImage());
+      String currentName = controller.getCurrent().getName();
+
+      controller.removeCurrent();
+      m.remove(controller.getCurrent().getImage());
+
+      controller.renderMessageToView("Removed layer: \"" + currentName + "\" \n");
+    }
   }
 }

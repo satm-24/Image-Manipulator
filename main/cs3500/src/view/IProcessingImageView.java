@@ -12,6 +12,7 @@ public interface IProcessingImageView {
    *
    * @param message the error message
    */
-  void renderError(String message) throws IOException;
+  void renderMessage(String message);
+
 
 }

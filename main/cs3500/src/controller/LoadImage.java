@@ -29,6 +29,7 @@ public class LoadImage implements ImageProcessingCommand {
 
     ImageProcessingUtils.checkNotNull(location, "File loc cannot be null.");
 
+
     if (new File(location).exists()) {
       this.location = location;
     } else {
@@ -46,11 +47,14 @@ public class LoadImage implements ImageProcessingCommand {
 
       ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
 
-      System.out.println(controller.getCurrent());
-
       controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
 
       controller.getCurrent().setFileLocation(location);
+
+      controller.renderMessageToView(
+          "Loaded image at: " + location + " to current layer " +
+              controller.getCurrent().getName());
+
 
     } catch (IOException e) {
       System.out.println("image could not be loaded");
