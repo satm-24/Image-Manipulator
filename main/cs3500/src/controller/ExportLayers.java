@@ -25,11 +25,16 @@ public class ExportLayers implements ImageProcessingCommand {
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    try {
+    if (controller.getCurrent() == null) {
+      controller.renderMessageToView("Current layer is null. Please set a layer to "
+          + "current and try again. \n");
+      return;
+    }
 
-      File exportedLayers = new File(exportLocation);
+    if (new File(exportLocation).exists()) {
 
-      if (exportedLayers.createNewFile()) {
+      try {
+
         FileWriter writeIndividualFiles = new FileWriter(exportLocation);
 
         for (ILayer layer : controller.getLayers()) {
@@ -44,13 +49,14 @@ public class ExportLayers implements ImageProcessingCommand {
 
         writeIndividualFiles.close();
 
-        System.out.println("File created: " + exportedLayers.getName());
-      } else {
-        System.out.println("File already exists.");
+        System.out.println("File exported: " + exportLocation);
+
+      } catch (IOException e) {
+        controller.renderMessageToView("images could not be exported \n");
       }
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+
+    } else {
+      controller.renderMessageToView("Invalid export file location! \n");
     }
 
 

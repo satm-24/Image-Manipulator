@@ -42,7 +42,6 @@ public class SimpleImageProcessingController implements IProcessingController {
   private final Readable rd;
 
 
-
   /**
    * Constructs an object of our controller with the list of layers.
    *
@@ -299,8 +298,6 @@ public class SimpleImageProcessingController implements IProcessingController {
   @Override
   public void setCurrent(ILayer current) {
     if (this.current == null) {
-      System.out.println(current);
-
       this.current = current;
     } else {
       this.layers.remove(current);
@@ -308,7 +305,28 @@ public class SimpleImageProcessingController implements IProcessingController {
       this.layers.add(current);
 
     }
+  }
 
+  @Override
+  public void setCurrentInLayers(ILayer layer) {
+    for (int i = 0; i < this.layers.size(); i++) {
+      if (this.layers.get(i).getName().equals(this.current.getName())) {
+        this.layers.set(i, layer);
+        break;
+      }
+    }
+  }
+
+  @Override
+  public void setLayer(ILayer newLayer) {
+
+    for (int i = 0; i < this.layers.size(); i++) {
+      if (this.layers.get(i).getName().equals(newLayer.getName())) {
+        this.layers.set(i, newLayer);
+        break;
+      }
+
+    }
   }
 
   /**
@@ -333,13 +351,5 @@ public class SimpleImageProcessingController implements IProcessingController {
     }
   }
 
-  @Override
-  public void setCurrentInLayers(ILayer layer) {
-    for (int i = 0; i < this.layers.size(); i++) {
-      if (this.layers.get(i).getName().equals(this.current.getName())) {
-        this.layers.set(i, layer);
-        break;
-      }
-    }
-  }
+
 }

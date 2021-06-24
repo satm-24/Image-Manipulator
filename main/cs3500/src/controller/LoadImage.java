@@ -34,17 +34,18 @@ public class LoadImage implements ImageProcessingCommand {
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     if (controller.getCurrent() == null) {
-      controller.renderMessageToView("Current ");
+      controller.renderMessageToView("Current layer is null. Please create a layer, set it to "
+          + "current, and try again. \n");
+      return;
     }
 
-    if (new File(location).exists()) {
+    if (new File(location).exists() && validFile(location)) {
 
       try {
 
         BufferedImage img = ImageIO.read(new File(location));
 
         ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
-
 
 
         controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
@@ -57,11 +58,25 @@ public class LoadImage implements ImageProcessingCommand {
 
 
       } catch (IOException e) {
-        System.out.println("image could not be loaded \n");
+        controller.renderMessageToView("image could not be loaded \n");
       }
     } else {
       controller.renderMessageToView("Invalid load file location! \n");
     }
 
+  }
+
+  /**
+   *
+   * @param location
+   * @return
+   */
+  private boolean validFile(String location) {
+
+    if (location.endsWith("jpeg") || location.endsWith("jpg") || location.endsWith("png") ||
+    location.endsWith("ppm")) {
+      return true;
+    }
+    return false;
   }
 }

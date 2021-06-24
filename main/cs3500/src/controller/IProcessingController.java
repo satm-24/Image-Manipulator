@@ -40,6 +40,12 @@ public interface IProcessingController {
   void setCurrentInLayers(ILayer layer);
 
   /**
+   *
+   * @param newLayer
+   */
+  void setLayer(ILayer newLayer);
+
+  /**
    * Removes the current layer in the list of layers.
    */
   void removeCurrent();
