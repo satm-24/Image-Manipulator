@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="cs3500">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/cs3500/Archive 2.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cs3500/Archive 4.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cs3500/Archive 5.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cs3500/Archive.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cs3500/Archive 3.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

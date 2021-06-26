@@ -1,0 +1,63 @@
+Script Commands:
+
+- all commands are case-insensitive
+
+
+- to run any image transformation, there MUST be an image already loaded in to the layer
+
+
+- an image must be set to current to perform operations on it
+
+
+- to set a layer as the current layer, the user must type "current" followed by the name of the
+  layer they wish to select as current.
+    - e.g. to set the layer called "first" (assuming it has been created) as the current layer, the
+      user would have to type "current first".
+
+
+- to save a file, type "save" followed by the desired file path as a String
+    - e.g. to save an image to Koala.ppm, type "save Koala.ppm"
+
+
+- to load a file, type "load" followed by the file path as a String
+    - e.g. to load a ppm image of a koala, type "load Koala.ppm"
+
+
+- to blur the current layer, type "blur"
+
+
+- to sharpen the current layer, type "sharpen"
+
+
+- to transform the current layer to sepia, type "sepia"
+
+
+- to transform the current layer to greyscale, type "greyscale"
+
+
+- to set the current layer to visible, the user must type "visible" followed by nothing else
+
+
+- to set the current layer to invisible, the user must type "invisible" followed by nothing else
+
+
+- to add a layer to the list of layers, type in "add" followed by the name of the layer ("first", "
+  second", "tree", etc)
+    - e.g. to create a layer called "first" and subsequently another one called
+      "second", type in "add first", then "add second"
+
+- to load many layers, the user must input "loadmany" followed by the text file that contains all
+  the file locations of the files they want to load
+
+
+- to save many layers, the user must imput the word "export" followed by the text file where they
+  want to save the layers
+
+
+- in terms of removing layers, the user can only remove the layer that has been specified as "
+  current". To do this, the user must type in "remove" with nothing else following. If the current
+  layer is an empty Optional, this command does nothing.
+    - e.g. to remove the current layer (which is called "first"), the user would just type "remove"
+
+
+- to quit the program, the user must type either "q" or "quit", both of which are case-insensitive.

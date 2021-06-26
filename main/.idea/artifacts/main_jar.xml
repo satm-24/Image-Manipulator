@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/main_jar</output-path>
+    <root id="archive" name="main.jar">
+      <element id="module-output" name="main" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/cs3500/res2/hw6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/cs3500/res2/Archive 2.zip" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/cs3500/res2/Archive.zip" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/cs3500/resources/hw6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/cs3500/resources/Archive.zip" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

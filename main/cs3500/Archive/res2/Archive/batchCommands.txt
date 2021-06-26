@@ -1,0 +1,18 @@
+add first
+current first
+load test.jpg
+blur
+save blurredSquare.jpg JPEG
+add second
+current second
+sharpen
+add third
+current third
+sepia
+add fourth
+current fourth
+greyscale
+current first
+invisible first
+visible second
+q

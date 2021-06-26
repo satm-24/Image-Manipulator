@@ -1,0 +1,7 @@
+add first
+current first
+load redSquare.jpg JPEG
+add second
+current second
+remove
+q
