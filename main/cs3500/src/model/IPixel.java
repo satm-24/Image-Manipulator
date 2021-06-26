@@ -32,4 +32,12 @@ public interface IPixel {
    * @return the duplicate copy
    */
   Pixel copy();
+
+  // added this method for mosiacing
+
+  /**
+   *
+   * @param clr
+   */
+  void setClr(Color clr);
 }

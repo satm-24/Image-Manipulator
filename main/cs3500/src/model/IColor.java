@@ -32,4 +32,5 @@ public interface IColor {
    * @return the rgb int
    */
   int getRGB();
+
 }

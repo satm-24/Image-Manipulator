@@ -45,20 +45,37 @@ public class LoadImage implements ImageProcessingCommand {
 
         BufferedImage img = ImageIO.read(new File(location));
 
-        ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
+        ImageGrid grid = ImageUtil.convertImgToGrid(img, img.getWidth(), img.getHeight());
 
+        if (controller.getLayers().size() != 0
+            && !controller.getLayers().get(0).getFileLocation().equals("")) {
+
+          if (grid.getPixels().length != controller.getHeight()
+              && grid.getPixels()[0].length != controller.getWidth()) {
+            controller.renderMessageToView(
+                "All images must be the same dimensions, with a height " + "of " + controller
+                    .getHeight() + " and a width of " + controller.getWidth() + "\n");
+            return;
+          }
+
+        }
 
         controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
 
         controller.getCurrent().setFileLocation(location);
 
         controller.renderMessageToView(
-            "Loaded image at: " + location + " to current layer " +
-                controller.getCurrent().getName() + "\n");
+            "Loaded image at: " + location + " to current layer " + controller.getCurrent()
+                .getName() + "\n");
+
+//        System.out.println(controller.getCurrent().getFileLocation());
+//
+//        System.out.println(controller.getCurrent().toString());
+
 
 
       } catch (IOException e) {
-        controller.renderMessageToView("image could not be loaded \n");
+        controller.renderMessageToView("Image could not be loaded \n");
       }
     } else {
       controller.renderMessageToView("Invalid load file location! \n");
@@ -67,14 +84,13 @@ public class LoadImage implements ImageProcessingCommand {
   }
 
   /**
-   *
    * @param location
    * @return
    */
   private boolean validFile(String location) {
 
-    if (location.endsWith("jpeg") || location.endsWith("jpg") || location.endsWith("png") ||
-    location.endsWith("ppm")) {
+    if (location.endsWith("jpeg") || location.endsWith("jpg") || location.endsWith("png")
+        || location.endsWith("ppm")) {
       return true;
     }
     return false;

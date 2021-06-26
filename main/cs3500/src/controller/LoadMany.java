@@ -70,7 +70,7 @@ public class LoadMany implements ImageProcessingCommand {
 
                 BufferedImage img = ImageIO.read(new File(line));
 
-                ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
+                ImageGrid grid = ImageUtil.convertImgToGrid(img, img.getWidth(), img.getHeight());
 
                 controller.setLayer(
                     new Layer(true, grid, controller.getLayers().get(layerIdx).getName()));

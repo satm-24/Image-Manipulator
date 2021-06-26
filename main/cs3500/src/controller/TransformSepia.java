@@ -29,9 +29,14 @@ class TransformSepia implements ImageProcessingCommand {
       return;
     }
 
+    m.add(controller.getCurrent().getImage());
+
     ILayer current = new Layer(controller.getCurrent().getVisibility(),
         m.operate(new ColorTransformation(TransformationType.SEPIA)), controller.getCurrent()
         .getName());
+
+    current.setFileLocation(controller.getCurrent().getFileLocation());
+
     controller.setCurrentInLayers(current);
     controller.setCurrent(current);
 

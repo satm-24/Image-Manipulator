@@ -285,7 +285,7 @@ public class ImageProcessingCommandTest {
     SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
         layers, read, app);
 
-    IGrid gridToBeChanged = ImageUtil.convertToGrid(inJPEG, inJPEG.getWidth(), inJPEG.getHeight());
+    IGrid gridToBeChanged = ImageUtil.convertImgToGrid(inJPEG, inJPEG.getWidth(), inJPEG.getHeight());
 
     Pixel[][] gridToBeChangedPixels = gridToBeChanged.getPixels();
 
@@ -301,8 +301,7 @@ public class ImageProcessingCommandTest {
     controller.parseInput();
 
     IGrid redGrid =
-        ImageUtil.
-            convertToGrid(
+        ImageUtil.convertImgToGrid(
                 ImageIO.read(new File("blankSquare.jpg")), 234, 221);
 
     Pixel[][] redGridPixels = redGrid.getPixels();
@@ -338,7 +337,7 @@ public class ImageProcessingCommandTest {
     SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
         layers, read, app);
 
-    IGrid gridToBeChanged = ImageUtil.convertToGrid(inPNG, inPNG.getWidth(), inPNG.getHeight());
+    IGrid gridToBeChanged = ImageUtil.convertImgToGrid(inPNG, inPNG.getWidth(), inPNG.getHeight());
 
     Pixel[][] gridToBeChangedPixels = gridToBeChanged.getPixels();
 
@@ -354,8 +353,7 @@ public class ImageProcessingCommandTest {
     controller.parseInput();
 
     IGrid redGrid =
-        ImageUtil.
-            convertToGrid(
+        ImageUtil.convertImgToGrid(
                 ImageIO.read(new File("blankSquare.jpg")), 234, 221);
 
     Pixel[][] redGridPixels = redGrid.getPixels();

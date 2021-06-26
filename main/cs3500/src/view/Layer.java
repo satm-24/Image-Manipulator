@@ -14,7 +14,7 @@ import model.Pixel;
 public class Layer implements ILayer {
 
   private boolean visible = true;
-  private final IGrid image;
+  private IGrid image;
   private final String name;
   private String fileLocation = "";
 
@@ -92,6 +92,11 @@ public class Layer implements ILayer {
   @Override
   public boolean getVisibility() {
     return this.visible;
+  }
+
+  @Override
+  public void setImage(IGrid grid) {
+    this.image = grid;
   }
 
   @Override

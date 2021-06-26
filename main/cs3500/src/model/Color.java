@@ -12,6 +12,7 @@ public class Color implements IColor {
   private final int green;
   private final int blue;
 
+
   /**
    * Constructs an object of color with R,G,B values.
    *
@@ -91,7 +92,9 @@ public class Color implements IColor {
 
   @Override
   public int getRGB() {
-    int rgb = 65536 * red + 256 * green + blue;
-    return rgb;
+
+    java.awt.Color convertedColor = new java.awt.Color(65536 * red + 256 * green + blue);
+
+    return convertedColor.getRGB();
   }
 }

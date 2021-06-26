@@ -15,8 +15,9 @@ Script Commands:
       user would have to type "current first".
 
 
-- to save a file, type "save" followed by the desired file path as a String
-    - e.g. to save an image to Koala.ppm, type "save Koala.ppm"
+- to save a file, type "save" followed by the desired file path as a String and the type
+  of the file you are saving to (PPM, JPG, PNG). All inputs except the file are case insensitive.
+    - e.g. to save an image to Koala.ppm, type "save Koala.ppm PPM"
 
 
 - to load a file, type "load" followed by the file path as a String

@@ -55,13 +55,6 @@ public class SimpleImageModel implements IProcessingImageModel {
   @Override
   public void add(IGrid image) {
     ImageProcessingUtils.checkNotNull(image, "The image cannot be null.");
-
-    for (int i = 0; i < 250; i++) {
-      for (int j = 0; j < 250; j++) {
-        image.getPixels()[i][j] = new Pixel(new Color(0, 0, 0));
-      }
-    }
-
     this.images.add(image);
   }
 

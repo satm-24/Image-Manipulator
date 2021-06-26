@@ -113,18 +113,26 @@ public class ImageUtil extends java.awt.Color {
 
 
   /**
-   * Sets the rgb values from the given image to a certain pixel location.
    *
-   * @param imgPNG  the given image
-   * @param pixels2 the array of pixels we're mutating
-   * @param i       the row index
-   * @param j       the col index
+   * @param img
+   * @param pixels
+   * @param width
+   * @param height
+   * @return
    */
-  private static void setPixelToRGB(BufferedImage imgPNG, Pixel[][] pixels2, int i, int j) {
-    int r = new ImageUtil(imgPNG.getRGB(i, j)).getRed();
-    int g = new ImageUtil(imgPNG.getRGB(i, j)).getGreen();
-    int b = new ImageUtil(imgPNG.getRGB(i, j)).getBlue();
-    pixels2[j][i] = new Pixel(new Color(r, g, b));
+  private static Pixel[][] setPixelsRGB(BufferedImage img, Pixel[][] pixels, int width, int height) {
+
+
+    for (int i = 0; i < width; i++) { // width
+      for (int j = 0; j < height; j++) { // height
+        int r = new ImageUtil(img.getRGB(i, j)).getRed();
+        int g = new ImageUtil(img.getRGB(i, j)).getGreen();
+        int b = new ImageUtil(img.getRGB(i, j)).getBlue();
+        pixels[j][i] = new Pixel(new Color(r, g, b));
+      }
+    }
+
+    return pixels;
   }
 
   /**
@@ -135,15 +143,11 @@ public class ImageUtil extends java.awt.Color {
    * @param height height of BI
    * @return imagegrid rep of BI
    */
-  public static ImageGrid convertToGrid(BufferedImage img, int width, int height) {
+  public static ImageGrid convertImgToGrid(BufferedImage img, int width, int height) {
 
     Pixel[][] pixels = new Pixel[height][width];
 
-    for (int i = 0; i < width; i++) { // width
-      for (int j = 0; j < height; j++) { // height
-        setPixelToRGB(img, pixels, i, j);
-      }
-    }
+    pixels = setPixelsRGB(img, pixels, width, height);
 
     return new ImageGrid(pixels, width, height);
   }

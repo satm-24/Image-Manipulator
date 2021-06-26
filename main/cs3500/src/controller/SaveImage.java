@@ -30,11 +30,7 @@ public class SaveImage implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(saveLocation, "File loc cannot be null.");
     ImageProcessingUtils.checkNotNull(fileType, "filetype cannot be null.");
 
-    if (new File(saveLocation).exists()) {
-      this.saveLocation = saveLocation;
-    } else {
-      throw new IllegalArgumentException("Invalid save file location!");
-    }
+    this.saveLocation = saveLocation;
 
     this.fileType = fileType;
   }
@@ -42,13 +38,19 @@ public class SaveImage implements ImageProcessingCommand {
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    if (controller.getLayers().size() < 1) {
-      throw new IllegalStateException("There are no layers to save!");
+    if (!new File(saveLocation).exists()) {
+      controller.renderMessageToView("Invalid save file location!");
+      return;
     }
 
-    Pixel[][] pixels = new Pixel[250][250];
+    if (controller.getLayers().size() < 1) {
+      controller.renderMessageToView("There are no layers to save!");
+      return;
+    }
 
-    IGrid gridToSave = new ImageGrid(pixels, 250, 250);
+    Pixel[][] pixels = new Pixel[controller.getHeight()][controller.getWidth()];
+
+    IGrid gridToSave = new ImageGrid(pixels, pixels[0].length, pixels.length);
 
     for (int i = controller.getLayers().size() - 1; i >= 0; i--) {
 
@@ -65,11 +67,11 @@ public class SaveImage implements ImageProcessingCommand {
 
     if (fileType == FileType.JPEG) {
 
-      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_RGB, "JPEG");
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_RGB, "jpg");
 
     } else if (this.fileType == FileType.PNG) {
 
-      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_ARGB, "PNG");
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_ARGB, "png");
 
     } else if (this.fileType == FileType.PPM) {
       ImageUtil.writeToPPM(new ImageGrid(pixels, width, height), saveLocation);
@@ -88,9 +90,7 @@ public class SaveImage implements ImageProcessingCommand {
   private void createAndWriteBI(Pixel[][] pixels, int height, int width, int typeInt,
       String fileType) {
 
-    BufferedImage bufferedImage = new BufferedImage(width, height, typeInt);
-
-    setPixelsInBufferedImage(pixels, height, width, bufferedImage);
+    BufferedImage bufferedImage = setPixelsInBufferedImage(pixels, height, width, typeInt);
 
     writeBIToFile(bufferedImage, fileType);
   }
@@ -105,6 +105,10 @@ public class SaveImage implements ImageProcessingCommand {
     try {
 
       ImageIO.write(bufferedImage, fileType, new File(saveLocation));
+      System.out.println("file saved");
+      System.out.println("width: " + bufferedImage.getWidth());
+      System.out.println("height: " + bufferedImage.getHeight());
+
 
     } catch (IOException e) {
       System.out.println("Image could not be saved!");
@@ -112,24 +116,23 @@ public class SaveImage implements ImageProcessingCommand {
   }
 
   /**
-   * Sets the given buffered image to have the rgb values of the given pixel array.
-   *
-   * @param pixels        the pixel array we are getting rgb values from
-   * @param height        the height of the image
-   * @param width         the width of the image
-   * @param bufferedImage the image we are setting the pixels of
+   * @param pixels
+   * @param height
+   * @param width
+   * @param typeInt
+   * @return
    */
-  private void setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
-      BufferedImage bufferedImage) {
+  private BufferedImage setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
+      int typeInt) {
 
-    System.out.println(pixels[0][0]);
+    BufferedImage bufferedImage = new BufferedImage(width, height, typeInt);
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         bufferedImage.setRGB(x, y, pixels[y][x].getClr().getRGB());
       }
     }
-
+    return bufferedImage;
   }
 
 }

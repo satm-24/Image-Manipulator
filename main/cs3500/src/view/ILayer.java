@@ -55,4 +55,9 @@ public interface ILayer {
    * @param visible whether or not the layer is visible
    */
   void setVisibility(boolean visible);
+
+  /**
+   *
+   */
+  void setImage(IGrid grid);
 }

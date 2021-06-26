@@ -1,3 +1,30 @@
+
+
+**Update v3.0 - GUI**
+
+#### We have included a gui which has various different buttons. In the middle, there is a pane 
+####that shows a scrollable version of the currently loaded image. 
+
+---
+
+GUI Buttons:
+
+- blur: click to blur the current (selected) layer
+- sharpen: click to sharpen the current (selected) layer
+- sepia: click to apply the sepia filter on the current layer
+- greyscale: click to apply the greyscale filter on the current layer
+- load: click to open the file chooser and load an image
+- save: click to open the file chooser and save an image. The user must enter the name
+  of the image, AS WELL AS the desired 3 letter file extension they wish to save it as (png, jpg,
+  ppm)
+- add: adds a layer 
+- remove: removes the current layer
+- set current: opens up a dropdown menu with all layers, with the option to select a
+  particular layer as the currnet
+- mosaic: click to create a mosaic image with a number of seeds that the user must input
+- downsize: click to create a downsized image with dimensions (width x height) that the user 
+  must input in a dialog box
+
 Script Commands:
 
 - all commands are case-insensitive
@@ -15,8 +42,9 @@ Script Commands:
       user would have to type "current first".
 
 
-- to save a file, type "save" followed by the desired file path as a String
-    - e.g. to save an image to Koala.ppm, type "save Koala.ppm"
+- to save a file, type "save" followed by the desired file path as a String and the type
+  of the file you are saving to (PPM, JPG, PNG). All inputs except the file are case insensitive.
+    - e.g. to save an image to Koala.ppm, type "save Koala.ppm PPM"
 
 
 - to load a file, type "load" followed by the file path as a String

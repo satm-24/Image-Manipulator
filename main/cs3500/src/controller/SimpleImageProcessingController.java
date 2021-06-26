@@ -26,9 +26,8 @@ public class SimpleImageProcessingController implements IProcessingController {
    */
   public static void main(String[] args) {
 
-    SimpleImageProcessingController controller =
-        new SimpleImageProcessingController(new SimpleImageModel(), new ArrayList<>(),
-            new InputStreamReader(System.in), System.out);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(
+        new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
 
     controller.parseInput();
 
@@ -40,6 +39,8 @@ public class SimpleImageProcessingController implements IProcessingController {
   private final List<ILayer> layers;
   private ILayer current;
   private final Readable rd;
+  private int width;
+  private int height;
 
 
   /**
@@ -69,7 +70,12 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     this.layers = layers;
 
-    knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next())));
+    // default height and width when the program starts, changed when we add an image to the
+    // first layer
+    this.width = 250;
+    this.height = 250;
+
+    knownCommands.put("save", s -> new SaveImage(s.next(), convertToFileType(s.next(), s)));
     knownCommands.put("load", s -> new LoadImage(s.next()));
     knownCommands.put("blur", s -> new BlurImage());
     knownCommands.put("sharpen", s -> new SharpenImage());
@@ -79,6 +85,9 @@ public class SimpleImageProcessingController implements IProcessingController {
     knownCommands.put("remove", s -> new RemoveLayer());
     knownCommands.put("export", s -> new ExportLayers(s.next()));
     knownCommands.put("loadmany", s -> new LoadMany(s.next()));
+    // added these two commands
+    knownCommands.put("downsize", s -> new Downsize(s.next(), s.next()));
+    knownCommands.put("mosaic", s -> new Mosaic(covertToValidNumSeeds(s.next(), s)));
 
     if (this.layers.size() >= 1) {
       this.current = this.layers.get(this.layers.size() - 1);
@@ -88,17 +97,47 @@ public class SimpleImageProcessingController implements IProcessingController {
   }
 
   /**
-   * Converts a string to a file type enum.
+   * Parses a string input into a valid seed number for the mosiac command.
    *
-   * @param next the String we are converting
-   * @return the FileType representing what file type the string is.
+   * @param str string to parse to integer
+   * @param s   scanner to get input from
+   * @return number of seeds
    */
-  private Enum<FileType> convertToFileType(String next) {
+  private int covertToValidNumSeeds(String str, Scanner s) {
 
     while (true) {
+      try {
 
+        int res = Integer.parseInt(str);
+
+        if (res < 0) {
+          this.renderMessageToView("Invalid number of seeds! \n");
+        } else {
+          return res;
+        }
+      } catch (NumberFormatException e) {
+        this.renderMessageToView("Invalid number of seeds! \n");
+      }
+
+      str = s.next();
+    }
+
+
+  }
+
+  /**
+   * Converts string inputs to a file type enum.
+   *
+   * @param next the String we are converting
+   * @param s    the scanner we're taking input from
+   * @return the FileType representing what file type the string is.
+   */
+  private Enum<FileType> convertToFileType(String next, Scanner s) {
+
+    while (true) {
       switch (next.toUpperCase()) {
         case "JPEG":
+        case "JPG":
           return FileType.JPEG;
         case "PNG":
           return FileType.PNG;
@@ -106,18 +145,21 @@ public class SimpleImageProcessingController implements IProcessingController {
           return FileType.PPM;
 
         default:
-          renderMessageToView("String is not a valid file type. Try again");
+          break;
       }
 
+      renderMessageToView("Save was not given a valid file type. Try again \n");
+      next = s.next();
     }
+
 
   }
 
 
   @Override
   public void parseInput() {
-    System.out.println("Welcome to Simp, an free Photoshop alternative. Create a layer to begin. "
-        + "\n");
+    this.renderMessageToView(
+        "Welcome to Simp, an free Photoshop alternative. Create a layer to begin. " + "\n");
 
     Scanner scan = new Scanner(this.rd);
 
@@ -128,15 +170,18 @@ public class SimpleImageProcessingController implements IProcessingController {
 
       processVisibilityInput(scan, in);
 
+
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
         this.view.renderMessage("Program has quit.");
         return;
       }
 
-      processCurrentLayerInput(scan, in);
+      if(processCurrentLayerInput(scan, in)) in = scan.next();
 
-      Function<Scanner, ImageProcessingCommand> cmd =
-          knownCommands.getOrDefault(in, null);
+
+
+
+      Function<Scanner, ImageProcessingCommand> cmd = knownCommands.getOrDefault(in, null);
 
       if (cmd == null) {
         renderMessageToView("Invalid command, or the command does not exist.\n");
@@ -146,6 +191,11 @@ public class SimpleImageProcessingController implements IProcessingController {
         c.execute(model, this);
       }
 
+      if (this.layers.size() == 1) {
+        this.width = this.layers.get(0).getImage().getPixels()[0].length;
+        this.height = this.layers.get(0).getImage().getPixels().length;
+      }
+
     }
 
   }
@@ -153,8 +203,8 @@ public class SimpleImageProcessingController implements IProcessingController {
   @Override
   public boolean checkNullCurrent() {
     if (this.current == null) {
-      renderMessageToView("The current layer is null. Please set a layer as "
-          + "\"current\" and try again. \n");
+      renderMessageToView(
+          "The current layer is null. Please set a layer as " + "\"current\" and try again. \n");
 
       return true;
     }
@@ -166,7 +216,7 @@ public class SimpleImageProcessingController implements IProcessingController {
    * @param scan
    * @param in
    */
-  private void processCurrentLayerInput(Scanner scan, String in) {
+  private boolean processCurrentLayerInput(Scanner scan, String in) {
     while (in.equalsIgnoreCase("current")) {
 
       String layerName = scan.next();
@@ -176,15 +226,17 @@ public class SimpleImageProcessingController implements IProcessingController {
         this.current = findLayer(layerName);
 
         this.view.renderMessage("Current layer is now: \"" + this.current.getName() + "\" \n");
-
-        in = scan.next();
-
+//        in = scan.next();
+        return true;
 
       } else {
         renderMessageToView("Could not set current, invalid layer name. \n");
         in = scan.next();
       }
     }
+
+    return false;
+
   }
 
   /**
@@ -193,8 +245,7 @@ public class SimpleImageProcessingController implements IProcessingController {
    */
   private void processVisibilityInput(Scanner scan, String in) {
 
-    while (in.equalsIgnoreCase("invisible") ||
-        in.equalsIgnoreCase("visible")) {
+    while (in.equalsIgnoreCase("invisible") || in.equalsIgnoreCase("visible")) {
 
       if (in.equals("invisible")) {
 
@@ -291,6 +342,16 @@ public class SimpleImageProcessingController implements IProcessingController {
   }
 
   @Override
+  public int getHeight() {
+    return this.height;
+  }
+
+  @Override
+  public int getWidth() {
+    return this.width;
+  }
+
+  @Override
   public List<ILayer> getLayers() {
     return this.layers;
   }
@@ -300,7 +361,7 @@ public class SimpleImageProcessingController implements IProcessingController {
     if (this.current == null) {
       this.current = current;
     } else {
-      this.layers.remove(current);
+      this.layers.remove(this.current);
       this.current = current;
       this.layers.add(current);
 
@@ -328,6 +389,7 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     }
   }
+
 
   /**
    * Adds a command to our known commands.

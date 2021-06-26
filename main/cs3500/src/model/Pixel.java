@@ -7,7 +7,9 @@ import java.util.Objects;
  */
 public class Pixel implements IPixel {
 
-  private final Color clr;
+
+
+  private Color clr;
 
   /**
    * Default constructor for pixels that initializes the pixel to black.
@@ -64,6 +66,10 @@ public class Pixel implements IPixel {
   @Override
   public Pixel copy() {
     return new Pixel(this.clr.copy());
+  }
+
+  public void setClr(Color clr) {
+    this.clr = clr;
   }
 }
 

@@ -28,6 +28,18 @@ public interface IProcessingController {
   ILayer getCurrent();
 
   /**
+   *
+   * @return
+   */
+  int getHeight();
+
+  /**
+   *
+   * @return
+   */
+  int getWidth();
+
+  /**
    * Sets the current layer to the given layer.
    *
    * @param current the layer to be set to current
