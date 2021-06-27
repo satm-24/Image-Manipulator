@@ -25,6 +25,11 @@ GUI Buttons:
 
 Script Commands:
 
+- whenever you add a new layer, the layer also HAS to be set as current
+ to run operations on it. We do have somewhat of a failsafe but it gets messy with a lot of layers,
+  so do this to ensure the program works properly.
+
+
 - all commands are case-insensitive
 
 

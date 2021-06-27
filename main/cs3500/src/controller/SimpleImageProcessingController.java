@@ -2,8 +2,11 @@ package controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +31,41 @@ public class SimpleImageProcessingController implements IProcessingController, I
   /**
    * Runs the main method for the image processing program.
    *
-   * @param args the arguments
+   * @param args the CL inputs
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws FileNotFoundException {
+
+    if (args[0].equals("-text")) {
+
+      SimpleImageProcessingController controller = new SimpleImageProcessingController(
+          new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
+
+      controller.parseInput();
+
+    }
+
+    else if (args[0].equals("-interactive")) {
+
+      SimpleImageProcessingController controller = new SimpleImageProcessingController(
+          new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
+
+      controller.setView(new GraphicalView());
+
+      controller.parseInput();
+
+    }
+
+    else if (args[0].equals("-script") && validScript(args[1])) {
+
+      SimpleImageProcessingController controller = new SimpleImageProcessingController(
+          new SimpleImageModel(), new ArrayList<>(), new FileReader(args[1]), System.out);
+
+      controller.parseInput();
+    }
+
+    else {
+      throw new IllegalArgumentException("Invalid command line inputs!");
+    }
 
     SimpleImageProcessingController controller = new SimpleImageProcessingController(
         new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
@@ -41,6 +76,20 @@ public class SimpleImageProcessingController implements IProcessingController, I
 
     controller.parseInput();
 
+  }
+
+  /**
+   * Determines if the given file is a valid script.
+   * @param arg the file
+   * @return whether it is a valid script or not
+   */
+  private static boolean validScript(String arg) {
+
+    if (new File(arg).exists() && arg.endsWith(".txt")) {
+      return true;
+    }
+
+    return false;
   }
 
   private final Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;

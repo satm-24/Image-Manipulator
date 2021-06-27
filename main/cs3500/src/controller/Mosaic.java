@@ -34,7 +34,12 @@ public class Mosaic implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(m, "Model cant be null \n");
     ImageProcessingUtils.checkNotNull(controller, "Controller can't be null \n");
 
-    Pixel[][] imageToMosiac = controller.getLayers().get(0).getImage().getPixels();
+    if (numSeeds < 0) {
+      controller.renderMessageToView("Illegal num seeds \n");
+      return;
+    }
+
+    Pixel[][] imageToMosiac = controller.getCurrent().getImage().getPixels();
 
     Random rand = new Random();
 
