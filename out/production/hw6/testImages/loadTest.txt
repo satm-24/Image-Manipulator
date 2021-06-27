@@ -1,0 +1,3 @@
+main/cs3500/src/testImages/mario.png
+main/cs3500/src/testImages/smallCat.jpg
+main/cs3500/src/testImages/mario2.png
