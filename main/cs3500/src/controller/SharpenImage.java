@@ -23,20 +23,18 @@ public class SharpenImage implements ImageProcessingCommand {
     }
 
     if (controller.getCurrent().getFileLocation().equals("")) {
-      controller.renderMessageToView("There are no image to sharpen."
-          + " Please populate a layer. \n");
+      controller
+          .renderMessageToView("There are no image to sharpen." + " Please populate a layer. \n");
       return;
     }
 
     m.add(controller.getCurrent().getImage());
 
     ILayer current = new Layer(controller.getCurrent().getVisibility(),
-        m.operate(new Filter(FilterType.SHARPEN)), controller.getCurrent()
-        .getName());
+        m.operate(new Filter(FilterType.SHARPEN)), controller.getCurrent().getName());
 
     current.setFileLocation(controller.getCurrent().getFileLocation());
 
-    controller.setCurrentInLayers(current);
     controller.setCurrent(current);
 
     controller.renderMessageToView("Sharpened layer: \"" + current.getName() + "\" \n");

@@ -3,7 +3,7 @@ package model;
 import java.util.Objects;
 
 /**
- *
+ * Represents a pixel with coordinates.
  */
 public class PixelWithCoords extends Pixel implements ICoordsPixel {
 
@@ -12,28 +12,12 @@ public class PixelWithCoords extends Pixel implements ICoordsPixel {
   private final int y;
 
 
-  public Pixel getPixel() {
-    return pixel;
-  }
-
-  @Override
-  public String toString() {
-    return "PixelWithCoords{" + "pixel=" + pixel.toString() + ", x=" + x + ", y=" + y + '}';
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
   /**
+   * Constructs a PixelWithCoords object with coords and a pixel.
    *
-   * @param pixel
-   * @param x
-   * @param y
+   * @param pixel the pixel
+   * @param x     x coordinate
+   * @param y     y coordinate
    */
   public PixelWithCoords(Pixel pixel, int x, int y) {
     this.pixel = pixel;
@@ -57,5 +41,26 @@ public class PixelWithCoords extends Pixel implements ICoordsPixel {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), pixel, x, y);
+  }
+
+  @Override
+  public Pixel getPixel() {
+    return pixel;
+  }
+
+
+  @Override
+  public String toString() {
+    return "PixelWithCoords{" + "pixel=" + pixel.toString() + ", x=" + x + ", y=" + y + '}';
+  }
+
+  @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getY() {
+    return y;
   }
 }

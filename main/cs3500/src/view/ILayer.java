@@ -60,4 +60,5 @@ public interface ILayer {
    *
    */
   void setImage(IGrid grid);
+
 }

@@ -14,7 +14,7 @@ public class ImageUtilTest {
   @Test
   public void testReadToPPM() {
 
-    String file = new String("koalaTest.ppm");
+    String file = "main/cs3500/src/testImages/koalaTest.ppm";
 
     ImageGrid g = ImageUtil.readPPM(file);
 
@@ -39,9 +39,9 @@ public class ImageUtilTest {
 
     ImageGrid g = new ImageGrid(p, 2, 2);
 
-    ImageUtil.writeToPPM(g, "Koala.ppm");
+    ImageUtil.writeToPPM(g, "testPPM1.ppm");
 
-    String file = new String("Koala.ppm");
+    String file = new String("testPPM1.ppm");
 
     ImageGrid g2 = ImageUtil.readPPM(file);
 

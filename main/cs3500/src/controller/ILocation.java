@@ -1,14 +1,22 @@
 package controller;
 
 /**
- * superclass vs subclass?
- *
- * always need interface for public methods?
+ * Represents different locations.
  */
 public interface ILocation {
 
+  /**
+   * Gets the y coordinate.
+   *
+   * @return the y coordinate
+   */
   double getY();
 
+  /**
+   * Gets the x coordinate.
+   *
+   * @return the x coordinate
+   */
   double getX();
 
 

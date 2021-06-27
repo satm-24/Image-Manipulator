@@ -46,8 +46,6 @@ public class LoadImage implements ImageProcessingCommand {
 
       ImageGrid grid = ImageUtil.convertToGrid(img, img.getWidth(), img.getHeight());
 
-      System.out.println(controller.getCurrent());
-
       controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
 
       controller.getCurrent().setFileLocation(location);

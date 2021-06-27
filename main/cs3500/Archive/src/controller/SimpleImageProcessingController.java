@@ -27,9 +27,8 @@ public class SimpleImageProcessingController implements IProcessingController {
    */
   public static void main(String[] args) {
 
-    SimpleImageProcessingController controller =
-        new SimpleImageProcessingController(new SimpleImageModel(), new ArrayList<>(),
-            new InputStreamReader(System.in), System.out);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(
+        new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
 
     controller.parseInput();
 
@@ -117,8 +116,7 @@ public class SimpleImageProcessingController implements IProcessingController {
 
   @Override
   public void parseInput() {
-    System.out.println("Welcome to Simp, an free Photoshop alternative. Create a layer to begin. "
-        + "\n");
+    this.ren("Welcome to Simp, an free Photoshop alternative. Create a layer to begin. " + "\n");
 
     Scanner scan = new Scanner(this.rd);
 
@@ -150,15 +148,11 @@ public class SimpleImageProcessingController implements IProcessingController {
 
         String layerName = scan.next();
 
-        System.out.println(layerName);
-
         if (isValidLayerName(layerName)) {
 
           this.current = findLayer(layerName);
 
           in = scan.next();
-
-          System.out.println(this.current.getName());
 
 
         } else {
@@ -168,8 +162,7 @@ public class SimpleImageProcessingController implements IProcessingController {
 
       }
 
-      Function<Scanner, ImageProcessingCommand> cmd =
-          knownCommands.getOrDefault(in, null);
+      Function<Scanner, ImageProcessingCommand> cmd = knownCommands.getOrDefault(in, null);
 
       if (cmd == null) {
         tryToRenderError("Invalid command, or the command does not exist.");

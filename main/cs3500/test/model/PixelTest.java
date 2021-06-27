@@ -57,4 +57,17 @@ public class PixelTest {
     assertEquals(new Pixel(white), whitePixel.copy());
     assertEquals(new Pixel(black), blackPixel.copy());
   }
+
+  @Test
+  public void testSetColor() {
+
+    IPixel pixel = new Pixel(new Color(50, 1, 23));
+
+    assertEquals(new Color(50, 1, 23), pixel.getClr());
+
+    pixel.setClr(new Color(100, 100, 22));
+
+    assertEquals(new Color(100, 100, 22), pixel.getClr());
+
+  }
 }

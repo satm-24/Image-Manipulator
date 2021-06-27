@@ -51,4 +51,6 @@ public class ColorTest {
     assertEquals(new Color(0, 0, 0), new Color(-100, -100, -100));
     assertEquals(new Color(255, 255, 255), new Color(1000, 1000, 1000));
   }
+
+
 }

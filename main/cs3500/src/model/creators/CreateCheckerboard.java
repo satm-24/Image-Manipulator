@@ -28,8 +28,8 @@ public class CreateCheckerboard implements ICreator {
    */
   public CreateCheckerboard(int squareSize, int numSquares, List<Color> colors) {
     if (squareSize <= 0 || numSquares <= 0) {
-      throw new IllegalArgumentException("Square size and number of squares must be greater than "
-          + "0.");
+      throw new IllegalArgumentException(
+          "Square size and number of squares must be greater than " + "0.");
     } else if (colors == null) {
       throw new IllegalArgumentException("The list of colors cannot be null.");
     } else if (colors.size() != 2) {

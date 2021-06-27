@@ -113,8 +113,7 @@ public class ImageProcessingCommandTest {
   public void testAddLayer() {
     Readable read = new StringReader("add test");
     assertEquals(new ArrayList<ILayer>(), empty);
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, read,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, read, app);
 
     controller.parseInput();
     ILayer testLayer = new Layer(true, "test");
@@ -125,13 +124,12 @@ public class ImageProcessingCommandTest {
   @Test
   public void testBlurLayer() {
     Readable read = new StringReader("blur");
-    List<Color> colors = new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255),
-        new Color(0, 0, 0)));
+    List<Color> colors = new ArrayList<Color>(
+        Arrays.asList(new Color(255, 255, 255), new Color(0, 0, 0)));
     IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
     model.add(checkerboard2x2);
     IProcessingController controller = new SimpleImageProcessingController(model,
-        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read,
-        app);
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
     assertEquals(checkerboard2x2, controller.getCurrent().getImage());
     controller.parseInput();
     assertNotEquals(checkerboard2x2, controller.getCurrent().getImage());
@@ -140,13 +138,12 @@ public class ImageProcessingCommandTest {
   @Test
   public void testSharpenLayer() {
     Readable read = new StringReader("sharpen");
-    List<Color> colors = new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255),
-        new Color(0, 0, 0)));
+    List<Color> colors = new ArrayList<Color>(
+        Arrays.asList(new Color(255, 255, 255), new Color(0, 0, 0)));
     IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
     model.add(checkerboard2x2);
     IProcessingController controller = new SimpleImageProcessingController(model,
-        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read,
-        app);
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
     assertEquals(checkerboard2x2, controller.getCurrent().getImage());
     controller.parseInput();
     IGrid result = controller.getCurrent().getImage();
@@ -156,13 +153,12 @@ public class ImageProcessingCommandTest {
   @Test
   public void testSepiaLayer() {
     Readable read = new StringReader("sepia");
-    List<Color> colors = new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255),
-        new Color(0, 0, 0)));
+    List<Color> colors = new ArrayList<Color>(
+        Arrays.asList(new Color(255, 255, 255), new Color(0, 0, 0)));
     IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
     model.add(checkerboard2x2);
     IProcessingController controller = new SimpleImageProcessingController(model,
-        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read,
-        app);
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
     assertEquals(checkerboard2x2, controller.getCurrent().getImage());
     controller.parseInput();
     IGrid result = controller.getCurrent().getImage();
@@ -173,13 +169,12 @@ public class ImageProcessingCommandTest {
   public void testGreyscaleLayer() {
 
     Readable read = new StringReader("greyscale");
-    List<Color> colors = new ArrayList<Color>(Arrays.asList(new Color(255, 255, 255),
-        new Color(0, 0, 0)));
+    List<Color> colors = new ArrayList<Color>(
+        Arrays.asList(new Color(255, 255, 255), new Color(0, 0, 0)));
     IGrid checkerboard2x2 = new CreateCheckerboard(10, 2, colors).apply();
     model.add(checkerboard2x2);
     IProcessingController controller = new SimpleImageProcessingController(model,
-        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read,
-        app);
+        new ArrayList<ILayer>(Arrays.asList(new Layer(true, checkerboard2x2, "first"))), read, app);
     assertEquals(checkerboard2x2, controller.getCurrent().getImage());
     controller.parseInput();
     IGrid result = controller.getCurrent().getImage();
@@ -205,8 +200,8 @@ public class ImageProcessingCommandTest {
 
     Readable read = new StringReader("load test.jpg");
 
-    SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
-        layers, read, app);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(model, layers,
+        read, app);
 
     assertEquals(new Pixel(new Color(0, 0, 0)),
         controller.getLayers().get(0).getImage().getPixels()[0][0]);
@@ -243,8 +238,8 @@ public class ImageProcessingCommandTest {
 
     Readable read = new StringReader("load redSquare.png");
 
-    SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
-        layers, read, app);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(model, layers,
+        read, app);
 
     assertEquals(new Pixel(new Color(0, 0, 0)),
         controller.getLayers().get(0).getImage().getPixels()[0][0]);
@@ -282,8 +277,8 @@ public class ImageProcessingCommandTest {
 
     Readable read = new StringReader("save blankSquare.jpg JPEG");
 
-    SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
-        layers, read, app);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(model, layers,
+        read, app);
 
     IGrid gridToBeChanged = ImageUtil.convertToGrid(inJPEG, inJPEG.getWidth(), inJPEG.getHeight());
 
@@ -292,25 +287,20 @@ public class ImageProcessingCommandTest {
     for (int i = 0; i < gridToBeChangedPixels.length; i++) {
       for (int j = 0; j < gridToBeChangedPixels[0].length; j++) {
 
-        assertEquals(new Pixel(new Color(255, 255, 255)),
-            gridToBeChangedPixels[i][j]);
+        assertEquals(new Pixel(new Color(255, 255, 255)), gridToBeChangedPixels[i][j]);
 
       }
     }
 
     controller.parseInput();
 
-    IGrid redGrid =
-        ImageUtil.
-            convertToGrid(
-                ImageIO.read(new File("blankSquare.jpg")), 234, 221);
+    IGrid redGrid = ImageUtil.convertToGrid(ImageIO.read(new File("blankSquare.jpg")), 234, 221);
 
     Pixel[][] redGridPixels = redGrid.getPixels();
 
     for (int i = 0; i < redGridPixels.length; i++) {
       for (int j = 0; j < redGridPixels[0].length; j++) {
-        assertEquals(new Pixel(new Color(254, 0, 0)),
-            redGridPixels[i][j]);
+        assertEquals(new Pixel(new Color(254, 0, 0)), redGridPixels[i][j]);
       }
     }
 
@@ -335,8 +325,8 @@ public class ImageProcessingCommandTest {
 
     Readable read = new StringReader("save blankSquare.png PNG");
 
-    SimpleImageProcessingController controller = new SimpleImageProcessingController(model,
-        layers, read, app);
+    SimpleImageProcessingController controller = new SimpleImageProcessingController(model, layers,
+        read, app);
 
     IGrid gridToBeChanged = ImageUtil.convertToGrid(inPNG, inPNG.getWidth(), inPNG.getHeight());
 
@@ -345,25 +335,20 @@ public class ImageProcessingCommandTest {
     for (int i = 0; i < gridToBeChangedPixels.length; i++) {
       for (int j = 0; j < gridToBeChangedPixels[0].length; j++) {
 
-        assertEquals(new Pixel(new Color(255, 255, 255)),
-            gridToBeChangedPixels[i][j]);
+        assertEquals(new Pixel(new Color(255, 255, 255)), gridToBeChangedPixels[i][j]);
 
       }
     }
 
     controller.parseInput();
 
-    IGrid redGrid =
-        ImageUtil.
-            convertToGrid(
-                ImageIO.read(new File("blankSquare.jpg")), 234, 221);
+    IGrid redGrid = ImageUtil.convertToGrid(ImageIO.read(new File("blankSquare.jpg")), 234, 221);
 
     Pixel[][] redGridPixels = redGrid.getPixels();
 
     for (int i = 0; i < redGridPixels.length; i++) {
       for (int j = 0; j < redGridPixels[0].length; j++) {
-        assertEquals(new Pixel(new Color(254, 0, 0)),
-            redGridPixels[i][j]);
+        assertEquals(new Pixel(new Color(254, 0, 0)), redGridPixels[i][j]);
       }
     }
 

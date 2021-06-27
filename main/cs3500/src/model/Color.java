@@ -75,9 +75,7 @@ public class Color implements IColor {
       return false;
     }
     Color that = (Color) o;
-    return this.red == that.red
-        && this.green == that.green
-        && this.blue == that.blue;
+    return this.red == that.red && this.green == that.green && this.blue == that.blue;
   }
 
   @Override

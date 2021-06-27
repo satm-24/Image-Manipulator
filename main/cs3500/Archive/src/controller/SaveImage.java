@@ -122,8 +122,6 @@ public class SaveImage implements ImageProcessingCommand {
   private void setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
       BufferedImage bufferedImage) {
 
-    System.out.println(pixels[0][0]);
-
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         bufferedImage.setRGB(x, y, pixels[y][x].getClr().getRGB());

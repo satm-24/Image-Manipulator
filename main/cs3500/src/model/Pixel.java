@@ -8,7 +8,6 @@ import java.util.Objects;
 public class Pixel implements IPixel {
 
 
-
   private Color clr;
 
   /**
@@ -68,6 +67,7 @@ public class Pixel implements IPixel {
     return new Pixel(this.clr.copy());
   }
 
+  @Override
   public void setClr(Color clr) {
     this.clr = clr;
   }

@@ -32,8 +32,8 @@ public class LoadMany implements ImageProcessingCommand {
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     if (controller.getCurrent() == null) {
-      controller.renderMessageToView("Current layer is null. Please set a layer to "
-          + "current and try again. \n");
+      controller.renderMessageToView(
+          "Current layer is null. Please set a layer to " + "current and try again. \n");
       return;
     }
 
@@ -42,7 +42,9 @@ public class LoadMany implements ImageProcessingCommand {
   }
 
   /**
-   * @param controller
+   * Loads multiple images to every layer in the controller.
+   *
+   * @param controller our program's controller
    */
   private void loadImagesToLayers(IProcessingController controller) {
 
@@ -54,8 +56,7 @@ public class LoadMany implements ImageProcessingCommand {
         controller.renderMessageToView(
             "The number of layers " + "(" + controller.getLayers().size() + ")"
                 + " adoes not match the number of files you wish to load " + "(" + numLines + "). "
-                + "Please adjust the number of "
-                + "layers and try again. \n");
+                + "Please adjust the number of " + "layers and try again. \n");
       } else {
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocation))) {
           String line;
@@ -72,14 +73,14 @@ public class LoadMany implements ImageProcessingCommand {
 
                 ImageGrid grid = ImageUtil.convertImgToGrid(img, img.getWidth(), img.getHeight());
 
-                controller.setLayer(
+                controller.setLayerWithSameName(
                     new Layer(true, grid, controller.getLayers().get(layerIdx).getName()));
 
                 controller.getLayers().get(layerIdx).setFileLocation(line);
 
                 controller.renderMessageToView(
-                    "Loaded image at: " + line + " to layer \"" +
-                        controller.getLayers().get(layerIdx).getName() + "\" \n");
+                    "Loaded image at: " + line + " to layer \"" + controller.getLayers()
+                        .get(layerIdx).getName() + "\" \n");
 
                 layerIdx++;
 
@@ -107,11 +108,15 @@ public class LoadMany implements ImageProcessingCommand {
 
   }
 
+  /**
+   *
+   * @param file
+   * @param controller
+   * @return
+   */
   private int countNumLinesInFile(File file, IProcessingController controller) {
 
     int numLines = 0;
-
-    System.out.println(file.getAbsolutePath());
 
     try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
       String line;

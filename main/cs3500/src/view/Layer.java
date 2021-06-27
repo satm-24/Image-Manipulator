@@ -122,16 +122,12 @@ public class Layer implements ILayer {
       return false;
     }
     Layer l = (Layer) o;
-    return this.visible == l.visible
-        && this.name.equals(l.name);
+    return this.visible == l.visible && this.name.equals(l.name);
   }
 
   @Override
   public String toString() {
-    return "Layer{" +
-        "visible=" + visible +
-        ", name='" + name + '\'' +
-        '}';
+    return "Layer{" + "visible=" + visible + ", name='" + name + '\'' + '}';
   }
 
 
@@ -140,5 +136,4 @@ public class Layer implements ILayer {
     return Objects.hash(this.visible, this.name);
   }
 }
-
 

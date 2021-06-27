@@ -44,7 +44,7 @@ public class ImageGridTest {
 
   @Before
   public void setUp() {
-    ig = ImageUtil.readPPM("/Users/satwikmisra/CS3500/hw5/Koala.ppm");
+    ig = ImageUtil.readPPM("/Users/satwikmisra/CS3500/hw5/testPPM1.ppm");
 
     imageList = new ArrayList<>();
 
@@ -1567,8 +1567,7 @@ public class ImageGridTest {
       }
     }
 
-    assertEquals(new Pixel(new Color(0, 0, 0)),
-        g.calcNeighboringSum(pixels3X3, testKern, 0, 0));
+    assertEquals(new Pixel(new Color(0, 0, 0)), g.calcNeighboringSum(pixels3X3, testKern, 0, 0));
 
   }
 

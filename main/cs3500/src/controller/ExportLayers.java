@@ -26,8 +26,8 @@ public class ExportLayers implements ImageProcessingCommand {
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
     if (controller.getCurrent() == null) {
-      controller.renderMessageToView("Current layer is null. Please set a layer to "
-          + "current and try again. \n");
+      controller.renderMessageToView(
+          "Current layer is null. Please set a layer to " + "current and try again. \n");
       return;
     }
 
@@ -49,7 +49,7 @@ public class ExportLayers implements ImageProcessingCommand {
 
         writeIndividualFiles.close();
 
-        System.out.println("File exported: " + exportLocation);
+        controller.renderMessageToView("File exported: " + exportLocation + "\n");
 
       } catch (IOException e) {
         controller.renderMessageToView("images could not be exported \n");

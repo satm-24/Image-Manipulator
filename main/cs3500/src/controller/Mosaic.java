@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.Random;
 import model.Color;
 import model.IProcessingImageModel;
+import model.ImageProcessingUtils;
 import model.Pixel;
 import model.PixelWithCoords;
 
 /**
- * Represents a command for creating an image mosiac.
+ * Represents a command for creating an image mosaic.
  */
 public class Mosaic implements ImageProcessingCommand {
 
@@ -21,7 +22,7 @@ public class Mosaic implements ImageProcessingCommand {
   /**
    * Constructs a Mosaic object with a certain number of seeds.
    *
-   * @param numSeeds
+   * @param numSeeds number of seeds we want
    */
   public Mosaic(int numSeeds) {
     this.numSeeds = numSeeds;
@@ -30,8 +31,10 @@ public class Mosaic implements ImageProcessingCommand {
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    Pixel[][] imageToMosiac = controller.getLayers().get(0).getImage().getPixels();
+    ImageProcessingUtils.checkNotNull(m, "Model cant be null \n");
+    ImageProcessingUtils.checkNotNull(controller, "Controller can't be null \n");
 
+    Pixel[][] imageToMosiac = controller.getLayers().get(0).getImage().getPixels();
 
     Random rand = new Random();
 
@@ -52,21 +55,18 @@ public class Mosaic implements ImageProcessingCommand {
 
         PixelWithCoords pixel = new PixelWithCoords(imageToMosiac[i][j], j, i);
 
-          PixelWithCoords closestSeed = findClosestSeed(pixel, seedPixels);
+        PixelWithCoords closestSeed = findClosestSeed(pixel, seedPixels);
 
-          if (!assignedPixels.containsKey(closestSeed)) {
-            assignedPixels.put(closestSeed, new ArrayList<>(Arrays.asList(pixel)));
-          } else {
+        if (!assignedPixels.containsKey(closestSeed)) {
+          assignedPixels.put(closestSeed, new ArrayList<>(Arrays.asList(pixel)));
+        } else {
 
-            assignedPixels.get(closestSeed).add(pixel);
-          }
-
-
+          assignedPixels.get(closestSeed).add(pixel);
+        }
 
 
       }
     }
-
 
     setAvgColorInClusters(seedPixels, assignedPixels);
 
@@ -83,17 +83,21 @@ public class Mosaic implements ImageProcessingCommand {
   private void setAvgColorInClusters(List<PixelWithCoords> seedPixels,
       Map<PixelWithCoords, List<PixelWithCoords>> assignedPixels) {
 
+    ImageProcessingUtils.checkNotNull(seedPixels, "Seeds cant be null \n");
+    ImageProcessingUtils.checkNotNull(assignedPixels, "Assigned Pxls can't be null \n");
+
     for (PixelWithCoords pixel : seedPixels) {
 
       List<PixelWithCoords> associatedPixels = assignedPixels.get(pixel);
 
-      Color avgColor = findAverageColor(associatedPixels);
 
+      if (associatedPixels != null) {
+        Color avgColor = findAverageColor(associatedPixels);
 
-      for (PixelWithCoords pixelFromAssociated : associatedPixels) {
-        pixelFromAssociated.getPixel().setClr(avgColor);
+        for (PixelWithCoords pixelFromAssociated : associatedPixels) {
+          pixelFromAssociated.getPixel().setClr(avgColor);
+        }
       }
-
 
     }
 
@@ -105,6 +109,9 @@ public class Mosaic implements ImageProcessingCommand {
    * @param associatedPixels the given list of pixels
    */
   private Color findAverageColor(List<PixelWithCoords> associatedPixels) {
+
+
+    ImageProcessingUtils.checkNotNull(associatedPixels, "Pixels cant be null \n");
 
     double sumRed = 0;
     double sumGreen = 0;
@@ -134,6 +141,9 @@ public class Mosaic implements ImageProcessingCommand {
    */
   private PixelWithCoords findClosestSeed(PixelWithCoords pixel, List<PixelWithCoords> seedPixels) {
 
+    ImageProcessingUtils.checkNotNull(pixel, "Pixel cant be null \n");
+    ImageProcessingUtils.checkNotNull(seedPixels, "Seeds cant be null \n");
+
     double closestDistance = Double.MAX_VALUE;
     PixelWithCoords closestSeed = seedPixels.get(0);
 
@@ -144,7 +154,6 @@ public class Mosaic implements ImageProcessingCommand {
       }
     }
 
-
     return closestSeed;
 
   }
@@ -152,11 +161,14 @@ public class Mosaic implements ImageProcessingCommand {
   /**
    * Computes the euclidean distance between two pixels.
    *
-   * @param pixel
-   * @param seedPixel
-   * @return
+   * @param pixel     first pixel
+   * @param seedPixel other pixel we're computing dist to
+   * @return distance
    */
   private double distanceBetween(PixelWithCoords pixel, PixelWithCoords seedPixel) {
+
+    ImageProcessingUtils.checkNotNull(pixel, "Pixel cant be null \n");
+    ImageProcessingUtils.checkNotNull(seedPixel, "Seeds cant be null \n");
 
     double squaredSum =
         Math.pow(pixel.getX() - seedPixel.getX(), 2) + Math.pow(pixel.getY() - seedPixel.getY(), 2);

@@ -36,15 +36,15 @@ public class ExportLayers implements ImageProcessingCommand {
           writeIndividualFiles.write(layer.getFileLocation() + "\n");
         }
 
+        controller.renderMessageToView("File created: " + exportedLayers.getName() + "\n");
         writeIndividualFiles.close();
 
-        System.out.println("File created: " + exportedLayers.getName());
       } else {
-        System.out.println("File already exists.");
+        controller.renderMessageToView("File already exists\n");
+
       }
     } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+      controller.renderMessageToView("Could not create file.\n")
     }
 
 

@@ -53,32 +53,28 @@ public class ImageProcessingControllerTest {
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidCommand() {
     Readable read = new StringReader("qwerty");
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, read,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, read, app);
     controller.parseInput();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidCurrent() {
     Readable read = new StringReader("blur");
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, read,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, read, app);
     controller.parseInput();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testNullCommand() {
     Readable read = new StringReader("null");
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, read,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, read, app);
     controller.parseInput();
   }
 
   @Test
   public void testQuit() {
     Readable read = new StringReader("q");
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, read,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, read, app);
     controller.parseInput();
     assertEquals("Program has quit.", app.toString());
   }
@@ -125,8 +121,7 @@ public class ImageProcessingControllerTest {
 
     FileInputStream fstream = new FileInputStream("batchCommands.txt");
     BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-    IProcessingController controller = new SimpleImageProcessingController(model, empty, br,
-        app);
+    IProcessingController controller = new SimpleImageProcessingController(model, empty, br, app);
 
     assertEquals(0, controller.getLayers().size());
 

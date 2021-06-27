@@ -1,27 +1,31 @@
 package model;
 
-import model.IPixel;
-import model.Pixel;
-
+/**
+ * Represents pixels with coordinates. Assignment 7: This class was added for our 2 new commands to
+ * keep track of pixel coordinates, as they originally only had a color.
+ */
 public interface ICoordsPixel extends IPixel {
 
   /**
+   * Gets the Y coord.
    *
-   * @return
+   * @return the y coordinate
    */
   int getY();
 
   /**
+   * Gets the X coord.
    *
-   * @return
+   * @return the x coordinate
    */
   int getX();
 
   /**
+   * Gets the pixel.
    *
-   * @return
+   * @return the pixel
    */
-  Pixel getPixel();
+  IPixel getPixel();
 
 
 }

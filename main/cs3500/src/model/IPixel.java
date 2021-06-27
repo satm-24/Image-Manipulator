@@ -33,11 +33,10 @@ public interface IPixel {
    */
   Pixel copy();
 
-  // added this method for mosiacing
-
   /**
+   * Sets the pixel's color to the given color. This method was added for our mosaic command.
    *
-   * @param clr
+   * @param clr the color to set to
    */
   void setClr(Color clr);
 }

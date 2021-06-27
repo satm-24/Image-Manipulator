@@ -58,7 +58,7 @@ public class ImageModelTest {
   @Before
   public void setup() {
 
-    ig = ImageUtil.readPPM("/Users/satwikmisra/CS3500/hw5/Koala.ppm");
+    ig = ImageUtil.readPPM("/Users/satwikmisra/CS3500/hw5/testPPM1.ppm");
 
     imageList = new ArrayList<>();
 
@@ -81,8 +81,8 @@ public class ImageModelTest {
         {whitePixel, whitePixel, blackPixel, blackPixel},
         {blackPixel, blackPixel, whitePixel, whitePixel},
         {blackPixel, blackPixel, whitePixel, whitePixel}};
-    pixelGrid3x3 = new Pixel[][]{{whitePixel, blackPixel, whitePixel}, {blackPixel, whitePixel,
-        blackPixel}, {whitePixel, blackPixel, whitePixel}};
+    pixelGrid3x3 = new Pixel[][]{{whitePixel, blackPixel, whitePixel},
+        {blackPixel, whitePixel, blackPixel}, {whitePixel, blackPixel, whitePixel}};
 
     checkerBoard1x1 = new ImageGrid(pixelGrid1x1, 1, 1);
     checkerBoard4x4 = new ImageGrid(pixelGrid4x4, 4, 4);
@@ -94,12 +94,9 @@ public class ImageModelTest {
     purpleAndLightRedGrid = new ImageGrid(purpleAndLightRedPixels, 3, 3);
     testModel.add(purpleAndLightRedGrid);
 
-    createBoard1x1 = new CreateCheckerboard(1, 1, new ArrayList<>(Arrays.asList(
-        white, black)));
-    createBoard2x2 = new CreateCheckerboard(2, 2, new ArrayList<>(Arrays.asList(white,
-        black)));
-    createBoard1x3 = new CreateCheckerboard(1, 3, new ArrayList<>(Arrays.asList(white,
-        black)));
+    createBoard1x1 = new CreateCheckerboard(1, 1, new ArrayList<>(Arrays.asList(white, black)));
+    createBoard2x2 = new CreateCheckerboard(2, 2, new ArrayList<>(Arrays.asList(white, black)));
+    createBoard1x3 = new CreateCheckerboard(1, 3, new ArrayList<>(Arrays.asList(white, black)));
 
 
   }

@@ -74,8 +74,7 @@ public class OperationTest {
     pixels3X3[0][2] = new Pixel(new Color(100, 230, 105));
     pixels3X3[1][2] = new Pixel(new Color(23, 78, 105));
 
-    IGrid p = new Filter(FilterType.BLUR)
-        .apply(new ImageGrid(pixels3X3, 3, 3));
+    IGrid p = new Filter(FilterType.BLUR).apply(new ImageGrid(pixels3X3, 3, 3));
 
     Pixel[][] pixelsNew = new Pixel[3][3];
 

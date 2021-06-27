@@ -1,5 +1,8 @@
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,17 +10,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
+import javax.swing.ImageIcon;
 import model.IProcessingImageModel;
 import model.ImageProcessingUtils;
 import model.SimpleImageModel;
+import view.GraphicalView;
 import view.ILayer;
 import view.IProcessingImageView;
-import view.SimpleProcessingImageView;
+import view.IViewListener;
+import view.TextView;
 
 /**
  * Represents a controller that takes in commands for our image processing software.
  */
-public class SimpleImageProcessingController implements IProcessingController {
+public class SimpleImageProcessingController implements IProcessingController, IViewListener {
 
   /**
    * Runs the main method for the image processing program.
@@ -29,13 +35,17 @@ public class SimpleImageProcessingController implements IProcessingController {
     SimpleImageProcessingController controller = new SimpleImageProcessingController(
         new SimpleImageModel(), new ArrayList<>(), new InputStreamReader(System.in), System.out);
 
+//    SimpleImageProcessingController controller =
+//        new SimpleImageProcessingController(new SimpleImageModel(), new ArrayList<>(),
+//            new InputStreamReader(System.in), System.out);
+
     controller.parseInput();
 
   }
 
   private final Map<String, Function<Scanner, ImageProcessingCommand>> knownCommands;
   private final IProcessingImageModel model;
-  private final IProcessingImageView view;
+  private IProcessingImageView view;
   private final List<ILayer> layers;
   private ILayer current;
   private final Readable rd;
@@ -62,7 +72,7 @@ public class SimpleImageProcessingController implements IProcessingController {
 
     this.model = model;
     this.rd = rd;
-    this.view = new SimpleProcessingImageView(app);
+    this.view = new TextView(app);
 
     ImageProcessingUtils.checkNotNull(layers, "The list of layers cannot be null.");
 
@@ -94,6 +104,10 @@ public class SimpleImageProcessingController implements IProcessingController {
     } else {
       this.current = null;
     }
+
+    this.view.addViewEventListener(this);
+    this.setUpLayers();
+
   }
 
   /**
@@ -170,16 +184,14 @@ public class SimpleImageProcessingController implements IProcessingController {
 
       processVisibilityInput(scan, in);
 
-
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
         this.view.renderMessage("Program has quit.");
         return;
       }
 
-      if(processCurrentLayerInput(scan, in)) in = scan.next();
-
-
-
+      if (processCurrentLayerInput(scan, in)) {
+        in = scan.next();
+      }
 
       Function<Scanner, ImageProcessingCommand> cmd = knownCommands.getOrDefault(in, null);
 
@@ -191,10 +203,6 @@ public class SimpleImageProcessingController implements IProcessingController {
         c.execute(model, this);
       }
 
-      if (this.layers.size() == 1) {
-        this.width = this.layers.get(0).getImage().getPixels()[0].length;
-        this.height = this.layers.get(0).getImage().getPixels().length;
-      }
 
     }
 
@@ -204,7 +212,8 @@ public class SimpleImageProcessingController implements IProcessingController {
   public boolean checkNullCurrent() {
     if (this.current == null) {
       renderMessageToView(
-          "The current layer is null. Please set a layer as " + "\"current\" and try again. \n");
+          "The current layer is null. Please set a layer as " + "\"current\" and try again."
+              + " \n");
 
       return true;
     }
@@ -213,8 +222,10 @@ public class SimpleImageProcessingController implements IProcessingController {
   }
 
   /**
-   * @param scan
-   * @param in
+   * Processes the input if the given string is current and sets the current layer accordingly.
+   *
+   * @param scan the scanner we get input form
+   * @param in   the string we look at
    */
   private boolean processCurrentLayerInput(Scanner scan, String in) {
     while (in.equalsIgnoreCase("current")) {
@@ -226,7 +237,6 @@ public class SimpleImageProcessingController implements IProcessingController {
         this.current = findLayer(layerName);
 
         this.view.renderMessage("Current layer is now: \"" + this.current.getName() + "\" \n");
-//        in = scan.next();
         return true;
 
       } else {
@@ -240,8 +250,10 @@ public class SimpleImageProcessingController implements IProcessingController {
   }
 
   /**
-   * @param scan
-   * @param in
+   * Processes input for strings that might change visibility.
+   *
+   * @param scan the scanner for input
+   * @param in   the string we're checking
    */
   private void processVisibilityInput(Scanner scan, String in) {
 
@@ -277,7 +289,7 @@ public class SimpleImageProcessingController implements IProcessingController {
    * Sets the layer to the given visibility.
    *
    * @param layerName name of the layer we are searching for
-   * @param b         whether the visility type is true or false
+   * @param b         whether the visibility type is true or false
    */
   private void determineAndSetVisibility(String layerName, boolean b) {
 
@@ -352,34 +364,41 @@ public class SimpleImageProcessingController implements IProcessingController {
   }
 
   @Override
+  public void setHeight(int height) {
+    this.height = height;
+  }
+
+  @Override
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  @Override
   public List<ILayer> getLayers() {
     return this.layers;
   }
 
   @Override
   public void setCurrent(ILayer current) {
-    if (this.current == null) {
-      this.current = current;
-    } else {
-      this.layers.remove(this.current);
-      this.current = current;
-      this.layers.add(current);
-
-    }
+    this.current = current;
+    setCurrentInLayers(current);
   }
 
-  @Override
-  public void setCurrentInLayers(ILayer layer) {
+  /**
+   * Sets the given layer to the current in the controller's list of layers.
+   *
+   * @param layer the layer to set to
+   */
+  private void setCurrentInLayers(ILayer layer) {
     for (int i = 0; i < this.layers.size(); i++) {
-      if (this.layers.get(i).getName().equals(this.current.getName())) {
+      if (this.layers.get(i).equals(this.current)) {
         this.layers.set(i, layer);
-        break;
       }
     }
   }
 
   @Override
-  public void setLayer(ILayer newLayer) {
+  public void setLayerWithSameName(ILayer newLayer) {
 
     for (int i = 0; i < this.layers.size(); i++) {
       if (this.layers.get(i).getName().equals(newLayer.getName())) {
@@ -403,14 +422,178 @@ public class SimpleImageProcessingController implements IProcessingController {
 
   @Override
   public void removeCurrent() {
-    if (this.isValidLayerName(this.current.getName())) {
-      for (ILayer layer : this.layers) {
-        if (layer.getName().equals(current.getName())) {
-          layers.remove(layer);
-          break;
+    this.layers.remove(this.current);
+  }
+
+
+
+  @Override
+  public ILayer getLastVisible() {
+    if (layers.size() == 0) {
+      return null;
+    }
+    else {
+      for (int i = 0; i < layers.size(); i++) {
+        if (layers.get(i).getVisibility()) {
+          return layers.get(i);
         }
       }
+      return layers.get(layers.size() - 1);
     }
+  }
+
+  /**
+   * Creates a bufferedImage from a layer.
+   *
+   * @param layer   the layer to be converted to a buffered image.
+   */
+  private BufferedImage convertToBufferedImage(ILayer layer) {
+    if (layer == null) {
+      view.renderMessage("The current layer is null. Please set a layer as current and try again.");
+    }
+    else if (layer.getImage() == null) {
+      view.renderMessage("The current layer is null. Please set a layer as current and try again.");
+    }
+    return layer.getImage().convertToBufferedImage();
+  }
+
+  @Override
+  public void handleLoad(File f) {
+    new LoadImage(f.getAbsolutePath()).execute(model, this);
+    view.setImage(new ImageIcon(convertToBufferedImage(getCurrent())));
+    view.renderMessage("Image loaded successfully");
+  }
+
+  @Override
+  public void handleSave(File f) {
+    String name = f.getName();
+    String location = f.getAbsolutePath();
+    String fileType = name.substring(name.length() - 3);
+    try {
+      new File(location).createNewFile();
+    } catch (IOException e) {
+      view.renderMessage("File with this name already exists");
+      return;
+    }
+    switch (fileType) {
+      case "ppm":
+        new SaveImage(location, FileType.PPM).execute(model, this);
+        view.renderMessage("Image saved successfully");
+        break;
+      case "jpg":
+        new SaveImage(location, FileType.JPEG).execute(model, this);
+        view.renderMessage("Image saved successfully");
+        break;
+      case "png":
+        new SaveImage(location, FileType.PNG).execute(model, this);
+        view.renderMessage("Image saved successfully");
+        break;
+      default:
+        view.renderMessage("Invalid file type.");
+    }
+  }
+
+  @Override
+  public void handleBlur() {
+    if (current == null) {
+      return;
+    }
+    new BlurImage().execute(model, this);
+    BufferedImage image = convertToBufferedImage(current);
+    view.setImage(new ImageIcon(image));
+    view.renderMessage("Image blurred successfully");
+  }
+
+  @Override
+  public void handleSharpen() {
+    if (current == null) {
+      return;
+    }
+    new SharpenImage().execute(model, this);
+    BufferedImage image = convertToBufferedImage(current);
+    view.setImage(new ImageIcon(image));
+    view.renderMessage("Image sharpened successfully");
+  }
+
+  @Override
+  public void handleSepia() {
+    if (current == null) {
+      return;
+    }
+    new TransformSepia().execute(model, this);
+    BufferedImage image = convertToBufferedImage(current);
+    view.setImage(new ImageIcon(image));
+    view.renderMessage("Image transformed to sepia successfully");
+  }
+
+  @Override
+  public void handleGreyscale() {
+    if (current == null) {
+      return;
+    }
+    new TransformGreyscale().execute(model, this);
+    BufferedImage image = convertToBufferedImage(current);
+    view.setImage(new ImageIcon(image));
+    view.renderMessage("Image transformed to greyscale successfully");
+  }
+
+  @Override
+  public void handleAdd(String name) {
+    new AddLayer(name).execute(model, this);
+    setUpLayers();
+  }
+
+  @Override
+  public void handleRemove() {
+    new RemoveLayer().execute(model, this);
+    setUpLayers();
+    if (current == null) {
+      view.setImage(new ImageIcon());
+    } else {
+      BufferedImage image = convertToBufferedImage(current);
+      view.setImage(new ImageIcon(image));
+    }
+  }
+
+  @Override
+  public void handleSetCurrent(String name) {
+    if (!layerNameExists(name)) {
+      renderMessageToView("A layer with the name does not exist. Please try again.");
+    }
+    else {
+      ILayer newCurrent = findLayer(name);
+      setCurrent(newCurrent);
+    }
+  }
+
+  /**
+   * Determines if the list of layers contains a layer with the given name.
+   *
+   * @param name the name to check if it is in the list of layers
+   * @return if a layer with the given name exists
+   */
+  private boolean layerNameExists(String name) {
+    for (ILayer layer: this.layers) {
+      if (layer.getName().equals(name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Sets up the layers for the viewer.
+   */
+  private void setUpLayers() {
+    view.clearLayerSelection();
+    for (ILayer layer: layers) {
+      view.setUpLayerSelection(layer.getName());
+    }
+  }
+
+  @Override
+  public void setView(IProcessingImageView view) {
+    this.view = view;
   }
 
 

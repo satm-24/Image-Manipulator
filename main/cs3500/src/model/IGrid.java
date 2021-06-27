@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Represents different implementations of grids for images and their respective methods.
  */
@@ -61,6 +63,12 @@ public interface IGrid {
    * @param col                   the column of the pixel
    * @return the pixel of sums
    */
-  Pixel calcNeighboringSum(Pixel[][] gridPixelsWithPadding,
-      double[][] kernel, int row, int col);
+  Pixel calcNeighboringSum(Pixel[][] gridPixelsWithPadding, double[][] kernel, int row, int col);
+
+  /**
+   * Converts this IGrid to a buffered image.
+   *
+   * @return the converted buffered image
+   */
+  BufferedImage convertToBufferedImage();
 }

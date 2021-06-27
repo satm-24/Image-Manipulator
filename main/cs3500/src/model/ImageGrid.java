@@ -2,6 +2,7 @@ package model;
 
 import static model.ImageProcessingUtils.checkNotNull;
 
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -35,7 +36,7 @@ public class ImageGrid implements IGrid {
     this.width = width;
     this.height = height;
   }
-  
+
 
   @Override
   public String convertGridToPPM() {
@@ -235,6 +236,22 @@ public class ImageGrid implements IGrid {
     }
 
     return transformedImg;
+  }
+
+  @Override
+  public BufferedImage convertToBufferedImage() {
+    int height = pixels.length;
+    int width = pixels[0].length;
+
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        bufferedImage.setRGB(x, y, pixels[y][x].getClr().getRGB());
+      }
+    }
+
+    return bufferedImage;
   }
 
   /**

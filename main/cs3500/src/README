@@ -11,15 +11,46 @@ as any custom matrix. The program takes in commands from a script, which can be 
 on in the USEME.
 
 Update v2.0: We've added a controller with all the relevant classes for supported commands
-(AddLayer, BlurImage, SaveImage, etc) which are described below. The controller has a
-parseInput method which takes care of user input and is used to run the program. We also have
-a simple view that displays error messages and general information about command effects. (Ex: 
+(AddLayer, BlurImage, SaveImage, etc) which are described below. The controller has a parseInput
+method which takes care of user input and is used to run the program. We also have a simple view
+that displays error messages and general information about command effects. (Ex:
 image has been blurred). We also support exporting and loading multiple images.
 
-Update v3.0: We've updated our list of commands to include Mosaics and Downsizing images.
-We've also created a new class, PixelWithCoords, which is an extension of the Pixel class but
-also has a coordinate location. We also now have a full-fledged GUI that can be used to operate
-our program, with specifics described in the USEME.
+#### Update v3.0: We've updated our list of commands to include Mosaics and Downsizing images. We've also created a new class, PixelWithCoords, which is an extension of the Pixel class but also has acoordinate location. We also now have a full-fledged GUI that can be used to operate our program,with specifics described in the USEME.
+####
+
+
+####Justifications for changes (v3.0):
+
+- setters were needed because we had to do a lot of pixel and layer changing
+  - we added a setHeight() and setWidth() because in the past we didnt enforce
+  dimensions correctly
+- aside from adding some various helper methods and the addition of our GUI, our design 
+did not change. We were able to have a text-based and interactive GUI while keeping the same
+  controller, which was nice.
+
+#### What changed to implement Mosaics and Downsizing? ####
+
+Downsizing:
+
+- we added a new class Downsize using the command pattern which took in a width and a height, and 
+  used its execute()
+method to actually mutate the given controller and carry out the command. We also had
+  to add downsizing to our list of commands (hashmap). We did have to introduce a setter,
+  setImage(), in order to change a layer's image to be the downsized image. Aside from that,
+  because we used the command patter not much changed. However, we did have to add a button to 
+  the GUI as well.
+  
+Mosaics:
+
+- we added a new class, Mosaic, which took in an int number of seeds. We represented seeds
+as random pixels in our grid. Implementing this was a bit more complicated, because we had to
+  create a new class, PixelWithCoords, which was a pixel with x and y coordinates. Before, our 
+  pixel class only had a color, and we didn't have a need for particular indices. Having pixels
+  with coordinates made the whole mosaic process a lot easier. We also implemented a setColor() 
+  method which changed the color of each pixel to the cluster average. Like Downsize, we had to add
+  a button to our GUI but aside from adding a command to our list of commands this was pretty 
+  straightforward and didn't change much.
 
 Model Overview:
 
@@ -41,7 +72,7 @@ Interfaces:
 - IProcessingController: represents types of controllers for the image processing program
 - ILayer: represents types of layers of images
 - IProcessingImageView: represents types of views for the image processing program
-  ####New Editions in v3.0
+  #### New Editions in v3.0
 - ILocation: represents various location types
 - ICoordsPixel: represents various pixels with coordinates
 
@@ -79,8 +110,8 @@ Classes:
 - Layer: represents a single layer of an image
 - SimpleProcessingImageView: represents a simple viewer for the image processing program that
   outputs errors
-  ####New Editions in v3.0
-- Location: represents a point with an x and y coord 
+  #### New Editions in v3.0
+- Location: represents a point with an x and y coord
 - Mosaic: command for turning an image into a mosaic
 - Downsize: command for downsizing images
 - PixelWithCoords: extends pixel, represents a pixel with an x and y coordinate
@@ -91,3 +122,8 @@ https://people.sc.fsu.edu/~jburkardt/data/ppma/ppma.html. Though no photographer
 they both were displayed as sample images on a site by the Department of Scientific Computer at
 Florida State University. Doing more research into the origin of these images, they were .png files
 that were then converted to .ppm (https://people.sc.fsu.edu/~jburkardt/data/png/png.html).
+Jellyfish, Koala, and Penguins were all given to us by the Assigment (NEU CCIS). 
+The mario png was takes for free from pngimg.com (https://pngimg.com/image/30530).
+and was cropped to fit our dimensions. The small cat image was taken for free from unslpash.com
+(https://unsplash.com/photos/gKXKBY-C-Dk) and cropped. Lastly, the red/black square image
+was made by us on an image editor.

@@ -1,2 +1,0 @@
-main/cs3500/src/testImages/mario.png
-main/cs3500/src/testImages/smallCat.jpeg

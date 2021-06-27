@@ -93,9 +93,7 @@ public class ImageUtil extends java.awt.Color {
 
     try {
 
-      PrintWriter out
-          = new PrintWriter(
-          new BufferedWriter(new FileWriter(fileToWriteTo, false)));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileToWriteTo, false)));
 
       out.write(ig.convertGridToPPM());
 
@@ -161,7 +159,7 @@ public class ImageUtil extends java.awt.Color {
     if (args.length > 0) {
       filename = args[0];
     } else {
-      filename = "Koala.ppm";
+      filename = "testPPM1.ppm";
     }
 
     System.out.println(new File("/Users/satwikmisra/Desktop/koalaTest.ppm"));
@@ -215,17 +213,16 @@ public class ImageUtil extends java.awt.Color {
     img8 = m8.operate(new Filter(FilterType.SHARPEN));
     img8 = m8.operate(new Filter(FilterType.SHARPEN));
 
-    writeToPPM((ImageGrid) img1,
-        "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleBuck.ppm");
+    writeToPPM((ImageGrid) img1, "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleBuck.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img2,
-        "/Users/satwikmisra/Desktop/TransformedCopies/sepiaBuck.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img2, "/Users/satwikmisra/Desktop/TransformedCopies/sepiaBuck.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img3,
         "/Users/satwikmisra/Desktop/TransformedCopies/blurredBuck.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img4,
-        "/Users/satwikmisra/Desktop/TransformedCopies/sharpBuck.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img4, "/Users/satwikmisra/Desktop/TransformedCopies/sharpBuck.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img5,
         "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleSnail.ppm");
@@ -233,8 +230,8 @@ public class ImageUtil extends java.awt.Color {
     ImageUtil.writeToPPM((ImageGrid) img6,
         "/Users/satwikmisra/Desktop/TransformedCopies/sepiaSnail.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img7,
-        "/Users/satwikmisra/Desktop/TransformedCopies/blurSnail.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img7, "/Users/satwikmisra/Desktop/TransformedCopies/blurSnail.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img8,
         "/Users/satwikmisra/Desktop/TransformedCopies/sharpSnail.ppm");

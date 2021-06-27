@@ -18,8 +18,8 @@ class TransformSepia implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(controller, "Controller cannot be null.");
     ImageProcessingUtils.checkNotNull(controller.getCurrent(), "Current cannot be null.");
     ILayer current = new Layer(controller.getCurrent().getVisibility(),
-        m.operate(new ColorTransformation(TransformationType.SEPIA)), controller.getCurrent()
-        .getName());
+        m.operate(new ColorTransformation(TransformationType.SEPIA)),
+        controller.getCurrent().getName());
     controller.setCurrentInLayers(current);
     controller.setCurrent(current);
   }

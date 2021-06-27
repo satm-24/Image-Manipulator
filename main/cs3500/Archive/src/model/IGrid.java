@@ -61,6 +61,5 @@ public interface IGrid {
    * @param col                   the column of the pixel
    * @return the pixel of sums
    */
-  Pixel calcNeighboringSum(Pixel[][] gridPixelsWithPadding,
-      double[][] kernel, int row, int col);
+  Pixel calcNeighboringSum(Pixel[][] gridPixelsWithPadding, double[][] kernel, int row, int col);
 }

@@ -1,9 +1,12 @@
 package controller;
 
+import java.awt.Image;
 import model.Color;
 import model.IGrid;
 import model.IProcessingImageModel;
 import model.ImageGrid;
+import model.ImageProcessingUtils;
+import model.ImageUtil;
 import model.Pixel;
 import view.ILayer;
 
@@ -17,7 +20,8 @@ public class Downsize implements ImageProcessingCommand {
 
   /**
    * Constructs an instance of Downsize with given dimensions to downsize to.
-   * @param width the width we want to downsize to
+   *
+   * @param width  the width we want to downsize to
    * @param height the height we want to downsize to
    */
   public Downsize(String width, String height) {
@@ -29,8 +33,12 @@ public class Downsize implements ImageProcessingCommand {
   @Override
   public void execute(IProcessingImageModel m, IProcessingController controller) {
 
-    int newWidth = -1;
-    int newHeight = -1;
+    ImageProcessingUtils.checkNotNull(m, "Model cant be null \n");
+    ImageProcessingUtils.checkNotNull(controller, "Controller can't be null \n");
+
+
+    int newWidth;
+    int newHeight;
 
     try {
       newWidth = Integer.parseInt(this.width);
@@ -49,17 +57,20 @@ public class Downsize implements ImageProcessingCommand {
     for (ILayer layer : controller.getLayers()) {
       Pixel[][] oldImgPixels = layer.getImage().getPixels();
 
-      Pixel[][] downsizedPxlsInFloatingPnt = downsizeOldPixels(oldImgPixels, newWidth,
-          newHeight);
+      Pixel[][] downsizedPxlsInFloatingPnt = downsizeOldPixels(oldImgPixels, newWidth, newHeight);
 
       IGrid downsizedImg = new ImageGrid(downsizedPxlsInFloatingPnt, newWidth, newHeight);
 
       controller.renderMessageToView(
           "downsized image width: " + downsizedImg.getPixels()[0].length + "\n");
       controller
-          .renderMessageToView("downsized image height: " + downsizedImg.getPixels().length + "\n");
+          .renderMessageToView("downsized image height: " + downsizedImg.getPixels().length
+              + "\n");
 
       layer.setImage(downsizedImg);
+
+      controller.setWidth(newWidth);
+      controller.setHeight(newHeight);
     }
 
 
@@ -69,8 +80,8 @@ public class Downsize implements ImageProcessingCommand {
    * Downsizes the old image's pixels and returns the downsizel pixel array.
    *
    * @param oldImgPixels the old pixels
-   * @param width width to downsize to
-   * @param height height to downsize to
+   * @param width        width to downsize to
+   * @param height       height to downsize to
    * @return downsized pixels
    */
   private Pixel[][] downsizeOldPixels(Pixel[][] oldImgPixels, int width, int height) {
@@ -94,25 +105,17 @@ public class Downsize implements ImageProcessingCommand {
    * Gets an int value between 0 and 255 for a specific R,G,B color of a downsized pixel.
    *
    * @param downsizedPxls array of downsized pixels
-   * @param x x index of downsized pixels
-   * @param y y index of downsized pixels
-   * @param oldImgPixels pixels of old image
+   * @param x             x index of downsized pixels
+   * @param y             y index of downsized pixels
+   * @param oldImgPixels  pixels of old image
    * @return RGB value corresponding to a particular channel
    */
   private int getDownsizedRGBValue(Pixel[][] downsizedPxls, int x, int y, Pixel[][] oldImgPixels,
-      String RGB) {
+      String rgb) {
 
-    int colorVectorIdx = -1;
+    int colorVectorIdx;
 
-    if (RGB.equals("red")) {
-      colorVectorIdx = 0;
-    } else if (RGB.equals("green")) {
-      colorVectorIdx = 1;
-    } else if (RGB.equals("blue")) {
-      colorVectorIdx = 2;
-    } else {
-      throw new IllegalArgumentException("Invalid color arg, must be R, G, or B!");
-    }
+    colorVectorIdx = determineColorVectorIdx(rgb);
 
     double downsizedWidth = downsizedPxls[0].length;
     double downsizedHeight = downsizedPxls.length;
@@ -152,5 +155,29 @@ public class Downsize implements ImageProcessingCommand {
     return (int) (n * (yPrime - Math.floor(yPrime)) + m * (Math.ceil(yPrime) - yPrime));
 
 
+  }
+
+  /**
+   * Determines the color vector idx.
+   *
+   * @param rgb the String R,G,B type
+   * @return the correct index
+   */
+  private int determineColorVectorIdx(String rgb) {
+    int colorVectorIdx;
+    switch (rgb) {
+      case "red":
+        colorVectorIdx = 0;
+        break;
+      case "green":
+        colorVectorIdx = 1;
+        break;
+      case "blue":
+        colorVectorIdx = 2;
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid color arg, must be R, G, or B!");
+    }
+    return colorVectorIdx;
   }
 }

@@ -31,7 +31,6 @@ public class SaveImage implements ImageProcessingCommand {
     ImageProcessingUtils.checkNotNull(fileType, "filetype cannot be null.");
 
     this.saveLocation = saveLocation;
-
     this.fileType = fileType;
   }
 
@@ -67,11 +66,11 @@ public class SaveImage implements ImageProcessingCommand {
 
     if (fileType == FileType.JPEG) {
 
-      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_RGB, "jpg");
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_RGB, "jpg", controller);
 
     } else if (this.fileType == FileType.PNG) {
 
-      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_ARGB, "png");
+      createAndWriteBI(pixels, height, width, BufferedImage.TYPE_INT_ARGB, "png", controller);
 
     } else if (this.fileType == FileType.PPM) {
       ImageUtil.writeToPPM(new ImageGrid(pixels, width, height), saveLocation);
@@ -88,11 +87,11 @@ public class SaveImage implements ImageProcessingCommand {
    * @param fileType type of file we are writing to
    */
   private void createAndWriteBI(Pixel[][] pixels, int height, int width, int typeInt,
-      String fileType) {
+      String fileType, IProcessingController c) {
 
     BufferedImage bufferedImage = setPixelsInBufferedImage(pixels, height, width, typeInt);
 
-    writeBIToFile(bufferedImage, fileType);
+    writeBIToFile(bufferedImage, fileType, c);
   }
 
   /**
@@ -101,13 +100,14 @@ public class SaveImage implements ImageProcessingCommand {
    * @param bufferedImage BI to write
    * @param fileType      type of file we are writing
    */
-  private void writeBIToFile(BufferedImage bufferedImage, String fileType) {
+  private void writeBIToFile(BufferedImage bufferedImage, String fileType,
+      IProcessingController controller) {
     try {
 
       ImageIO.write(bufferedImage, fileType, new File(saveLocation));
-      System.out.println("file saved");
-      System.out.println("width: " + bufferedImage.getWidth());
-      System.out.println("height: " + bufferedImage.getHeight());
+      controller.renderMessageToView("file saved");
+      controller.renderMessageToView("width: " + bufferedImage.getWidth() + "\n");
+      controller.renderMessageToView("height: " + bufferedImage.getHeight() + "\n");
 
 
     } catch (IOException e) {
@@ -116,11 +116,13 @@ public class SaveImage implements ImageProcessingCommand {
   }
 
   /**
-   * @param pixels
-   * @param height
-   * @param width
-   * @param typeInt
-   * @return
+   * Sets the pixels in the given array to a buffered image.
+   *
+   * @param pixels  the pixels we're setting
+   * @param height  height of BI
+   * @param width   width of BI
+   * @param typeInt typeInt of BI
+   * @return BI with correctly set pixels
    */
   private BufferedImage setPixelsInBufferedImage(Pixel[][] pixels, int height, int width,
       int typeInt) {

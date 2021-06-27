@@ -35,7 +35,6 @@ public class BlurImage implements ImageProcessingCommand {
 
     current.setFileLocation(controller.getCurrent().getFileLocation());
 
-    controller.setCurrentInLayers(current);
     controller.setCurrent(current);
 
     controller.renderMessageToView("Blurred layer: \"" + current.getName() + "\" \n");

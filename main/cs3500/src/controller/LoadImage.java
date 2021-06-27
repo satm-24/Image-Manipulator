@@ -47,8 +47,8 @@ public class LoadImage implements ImageProcessingCommand {
 
         ImageGrid grid = ImageUtil.convertImgToGrid(img, img.getWidth(), img.getHeight());
 
-        if (controller.getLayers().size() != 0
-            && !controller.getLayers().get(0).getFileLocation().equals("")) {
+        if (controller.getLayers().size() != 0 && !controller.getLayers().get(0).getFileLocation()
+            .equals("")) {
 
           if (grid.getPixels().length != controller.getHeight()
               && grid.getPixels()[0].length != controller.getWidth()) {
@@ -60,6 +60,11 @@ public class LoadImage implements ImageProcessingCommand {
 
         }
 
+        if (controller.getLayers().size() == 1) {
+          controller.setWidth(grid.getPixels()[0].length);
+          controller.setHeight(grid.getPixels().length);
+        }
+
         controller.setCurrent(new Layer(true, grid, controller.getCurrent().getName()));
 
         controller.getCurrent().setFileLocation(location);
@@ -67,11 +72,6 @@ public class LoadImage implements ImageProcessingCommand {
         controller.renderMessageToView(
             "Loaded image at: " + location + " to current layer " + controller.getCurrent()
                 .getName() + "\n");
-
-//        System.out.println(controller.getCurrent().getFileLocation());
-//
-//        System.out.println(controller.getCurrent().toString());
-
 
 
       } catch (IOException e) {
@@ -84,8 +84,10 @@ public class LoadImage implements ImageProcessingCommand {
   }
 
   /**
-   * @param location
-   * @return
+   * Checks if the given file location has a valid ending.
+   *
+   * @param location given file location
+   * @return whether it is valid or not
    */
   private boolean validFile(String location) {
 

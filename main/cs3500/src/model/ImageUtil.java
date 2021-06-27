@@ -66,7 +66,6 @@ public class ImageUtil extends java.awt.Color {
 
     Pixel[][] pixels = new Pixel[height][width];
 
-    // make this return a list of lists
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
 
@@ -93,9 +92,7 @@ public class ImageUtil extends java.awt.Color {
 
     try {
 
-      PrintWriter out
-          = new PrintWriter(
-          new BufferedWriter(new FileWriter(fileToWriteTo, false)));
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileToWriteTo, false)));
 
       out.write(ig.convertGridToPPM());
 
@@ -113,15 +110,16 @@ public class ImageUtil extends java.awt.Color {
 
 
   /**
+   * Sets the rgb values from the given BufferedImage to the given array of pixels.
    *
-   * @param img
-   * @param pixels
-   * @param width
-   * @param height
-   * @return
+   * @param img    given BI
+   * @param pixels what we're setting the colors of
+   * @param width  width of pixel array
+   * @param height height of pixel array
+   * @return pixel array with the right colors from the image
    */
-  private static Pixel[][] setPixelsRGB(BufferedImage img, Pixel[][] pixels, int width, int height) {
-
+  private static Pixel[][] setPixelsRGB(BufferedImage img, Pixel[][] pixels, int width,
+      int height) {
 
     for (int i = 0; i < width; i++) { // width
       for (int j = 0; j < height; j++) { // height
@@ -164,7 +162,7 @@ public class ImageUtil extends java.awt.Color {
     if (args.length > 0) {
       filename = args[0];
     } else {
-      filename = "Koala.ppm";
+      filename = "testPPM1.ppm";
     }
 
     System.out.println(new File("/Users/satwikmisra/Desktop/koalaTest.ppm"));
@@ -218,17 +216,16 @@ public class ImageUtil extends java.awt.Color {
     img8 = m8.operate(new Filter(FilterType.SHARPEN));
     img8 = m8.operate(new Filter(FilterType.SHARPEN));
 
-    writeToPPM((ImageGrid) img1,
-        "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleBuck.ppm");
+    writeToPPM((ImageGrid) img1, "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleBuck.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img2,
-        "/Users/satwikmisra/Desktop/TransformedCopies/sepiaBuck.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img2, "/Users/satwikmisra/Desktop/TransformedCopies/sepiaBuck.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img3,
         "/Users/satwikmisra/Desktop/TransformedCopies/blurredBuck.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img4,
-        "/Users/satwikmisra/Desktop/TransformedCopies/sharpBuck.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img4, "/Users/satwikmisra/Desktop/TransformedCopies/sharpBuck.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img5,
         "/Users/satwikmisra/Desktop/TransformedCopies/greyscaleSnail.ppm");
@@ -236,8 +233,8 @@ public class ImageUtil extends java.awt.Color {
     ImageUtil.writeToPPM((ImageGrid) img6,
         "/Users/satwikmisra/Desktop/TransformedCopies/sepiaSnail.ppm");
 
-    ImageUtil.writeToPPM((ImageGrid) img7,
-        "/Users/satwikmisra/Desktop/TransformedCopies/blurSnail.ppm");
+    ImageUtil
+        .writeToPPM((ImageGrid) img7, "/Users/satwikmisra/Desktop/TransformedCopies/blurSnail.ppm");
 
     ImageUtil.writeToPPM((ImageGrid) img8,
         "/Users/satwikmisra/Desktop/TransformedCopies/sharpSnail.ppm");

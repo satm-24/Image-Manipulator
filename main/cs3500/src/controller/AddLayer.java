@@ -30,6 +30,13 @@ public class AddLayer implements ImageProcessingCommand {
 
     ILayer newLayer = new Layer(true, this.name);
 
+    for (ILayer layer : controller.getLayers()) {
+      if (layer.getName().equals(this.name)) {
+        controller.renderMessageToView("Sorry, there is already a layer with this name!\n");
+        return;
+      }
+    }
+
     controller.getLayers().add(newLayer);
     controller.setCurrent(newLayer);
 
